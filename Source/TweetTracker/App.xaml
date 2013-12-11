@@ -1,0 +1,16 @@
+﻿<Application x:Class="TweetTracker.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             StartupUri="MainWindow.xaml"
+             xmlns:view="clr-namespace:TweetTracker"
+             xmlns:viewModels="clr-namespace:TweetTracker.ViewModels"
+             xmlns:converters="clr-namespace:TweetTracker.ViewModels.Converters">
+    <Application.Resources>
+        
+        <DataTemplate x:Key="SettingsDT" DataType="viewModels:CaptureSettingsViewModel">
+            <view:CaptureSettingsView/>
+        </DataTemplate>
+        
+        <converters:VisibilityConverter x:Key="BoolToVisConverter"/>
+    </Application.Resources>
+</Application>
