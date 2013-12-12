@@ -19,11 +19,11 @@
             <RowDefinition Height="10"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="20"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="10"/>
-            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         
         <TextBlock 
@@ -37,11 +37,10 @@
         </TextBlock>
 
 
-        <DockPanel 
-            Grid.Row="3" Grid.Column="1"
-                LastChildFill="False">
+        <WrapPanel 
+            Grid.Row="3" Grid.Column="1">
+            
             <vis:Chart
-                DockPanel.Dock="Top"
             Width="700" Height="{Binding ModelsHeight}">
                 <vis:Chart.Series>
                     <vis:BarSeries Title="Tweets per category"
@@ -52,8 +51,8 @@
                 </vis:Chart.Series>
             </vis:Chart>
 
-            <local:MultiChart SeriesSource="{Binding Path=Session.Subjects.Values}" 
-                DockPanel.Dock="Top"
+            <local:MultiChart 
+                SeriesSource="{Binding Path=Session.Subjects.Values}" 
             Width="700" Height="400">
                 <local:MultiChart.SeriesTemplate >
                     <DataTemplate >
@@ -67,7 +66,6 @@
             </local:MultiChart>
 
             <vis:Chart
-                DockPanel.Dock="Top"
                 Width="700" Height="400">
                 <vis:Chart.Series>
                     <vis:LineSeries
@@ -80,6 +78,6 @@
                 </vis:Chart.Series>
             </vis:Chart>
 
-        </DockPanel>
+        </WrapPanel>
     </Grid>
 </UserControl>

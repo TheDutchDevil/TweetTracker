@@ -36,6 +36,8 @@ namespace TweetTracker.Model
 
         public CaptureSession(CaptureSettings settings)
         {
+            // TODO: Inject a tweet serivce here
+
             this._settings = settings;
             this._countAtInterval = new ObservableCollection<KeyValuePair<int, int>>();
 
