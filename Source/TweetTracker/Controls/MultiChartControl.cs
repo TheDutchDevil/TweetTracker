@@ -13,7 +13,7 @@ using System.Windows.Controls.DataVisualization.Charting;
 
 namespace TweetTracker.Controls
 {
-    public class MultiChart : System.Windows.Controls.DataVisualization.Charting.Chart
+    public class MultipleChart : System.Windows.Controls.DataVisualization.Charting.Chart
     {
 
         #region SeriesSource (DependencyProperty)
@@ -23,13 +23,13 @@ namespace TweetTracker.Controls
             get { return (IEnumerable)GetValue(SeriesSourceProperty); }
             set { SetValue(SeriesSourceProperty, value); }
         }
-        public static readonly DependencyProperty SeriesSourceProperty = DependencyProperty.Register("SeriesSource", typeof(IEnumerable), typeof(MultiChart), new PropertyMetadata(default(IEnumerable), new PropertyChangedCallback(OnSeriesSourceChanged)));
+        public static readonly DependencyProperty SeriesSourceProperty = DependencyProperty.Register("SeriesSource", typeof(IEnumerable), typeof(MultipleChart), new PropertyMetadata(default(IEnumerable), new PropertyChangedCallback(OnSeriesSourceChanged)));
 
         private static void OnSeriesSourceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             IEnumerable oldValue = (IEnumerable)e.OldValue;
             IEnumerable newValue = (IEnumerable)e.NewValue;
-            MultiChart source = (MultiChart)d;
+            MultipleChart source = (MultipleChart)d;
             source.OnSeriesSourceChanged(oldValue, newValue);
         }
 
@@ -81,7 +81,7 @@ namespace TweetTracker.Controls
             get { return (DataTemplate)GetValue(SeriesTemplateProperty); }
             set { SetValue(SeriesTemplateProperty, value); }
         }
-        public static readonly DependencyProperty SeriesTemplateProperty = DependencyProperty.Register("SeriesTemplate", typeof(DataTemplate), typeof(MultiChart), new PropertyMetadata(default(DataTemplate)));
+        public static readonly DependencyProperty SeriesTemplateProperty = DependencyProperty.Register("SeriesTemplate", typeof(DataTemplate), typeof(MultipleChart), new PropertyMetadata(default(DataTemplate)));
 
         #endregion
 
@@ -92,7 +92,7 @@ namespace TweetTracker.Controls
             get { return (DataTemplateSelector)GetValue(SeriesTemplateSelectorProperty); }
             set { SetValue(SeriesTemplateSelectorProperty, value); }
         }
-        public static readonly DependencyProperty SeriesTemplateSelectorProperty = DependencyProperty.Register("SeriesTemplateSelector", typeof(DataTemplateSelector), typeof(MultiChart), new PropertyMetadata(default(DataTemplateSelector)));
+        public static readonly DependencyProperty SeriesTemplateSelectorProperty = DependencyProperty.Register("SeriesTemplateSelector", typeof(DataTemplateSelector), typeof(MultipleChart), new PropertyMetadata(default(DataTemplateSelector)));
 
         #endregion
 

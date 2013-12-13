@@ -18,7 +18,7 @@ namespace TweetTracker
     /// <summary>
     /// Interaction logic for CaptureSessionView.xaml
     /// </summary>
-    public partial class CaptureSessionView : UserControl
+    public sealed partial class CaptureSessionView : UserControl
     {
         public CaptureSessionView()
         {

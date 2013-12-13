@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -14,7 +15,7 @@ using TweetTracker.ViewModels;
 
 namespace TweetTracker.Model
 {
-    class CaptureSession : BaseViewModel
+    sealed class CaptureSession : BaseViewModel
     {
         private TwitterContext _context;
 
@@ -117,13 +118,13 @@ namespace TweetTracker.Model
         {
             var trackstringBuilder = new StringBuilder();
 
-            if(this._settings.HashTag == string.Empty)
+            if(string.IsNullOrEmpty(this._settings.HashTag))
             {
                 foreach(var keywords in this._settings.CompareKeys.Values)
                 {
                     foreach(var keyword in keywords)
                     {
-                        trackstringBuilder.Append(string.Format("{0},", keyword));
+                        trackstringBuilder.Append(string.Format(CultureInfo.InvariantCulture,"{0},", keyword));
                     }
                 }
 
@@ -142,11 +143,20 @@ namespace TweetTracker.Model
             this._startedAt = DateTime.Now;
             this._countAtInterval.Clear();
             this._timer = new System.Timers.Timer(Settings.CountInterval);
+            Settings.Reset();
             this._timer.Elapsed += (sedner, e) => this._countAtInterval.Add(
                 new KeyValuePair<int, int>(this._countAtInterval.Count * Settings.CountInterval, this.AllTweetsCount));
             this._countAtInterval.Add(
                 new KeyValuePair<int, int>(this._countAtInterval.Count * Settings.CountInterval, 0));
             this._timer.Start();
+            Settings.CountIntervalChanged +=  Settings_CountIntervalChanged;
+        }
+
+        private void Settings_CountIntervalChanged(object sender, EventArgs e)
+        {
+            _timer.Stop();
+            _timer.Interval = Settings.CountInterval;
+            _timer.Start();
         }
 
         private void HandleTweet(StreamContent stream)

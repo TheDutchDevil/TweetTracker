@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -33,7 +34,16 @@ namespace TweetTracker.Model
                 Application.Current.Dispatcher.Invoke(new Action(() => this._statusCountAtTime.Add(new KeyValuePair<int,int>((Settings.CountInterval / 1000) * this._statusCountAtTime.Count, (int) this.AllStatusCount))));
             this._timer.Start();
 
+            Settings.CountIntervalChanged += Settings_CountIntervalChanged;
+
             this._statusCountAtTime.Add(new KeyValuePair<int, int>((Settings.CountInterval / 1000) * this._statusCountAtTime.Count, (int)this.AllStatusCount));
+        }
+
+        void Settings_CountIntervalChanged(object sender, EventArgs e)
+        {
+            this._timer.Stop();
+            this._timer.Interval = Settings.CountInterval;
+            this._timer.Start();
         }
 
         public string Key
@@ -67,9 +77,9 @@ namespace TweetTracker.Model
         {
             foreach(var keyword in this._keywords)
             {
-                if(status.Text.ToLower().Contains(keyword.ToLower()))
+                if (status.Text.ToUpperInvariant().Contains(keyword.ToUpperInvariant()))
                 {
-                    Console.WriteLine(string.Format("Added to {0}: '{1}'", this.Key, status.Text));
+                    Console.WriteLine(string.Format(CultureInfo.InvariantCulture, "Added to {0}: '{1}'", this.Key, status.Text));
                     this.AllStatusCount = this._allStatusCount + 1;
                     break;
                 }

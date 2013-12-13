@@ -16,17 +16,18 @@ namespace TweetTracker.ViewModels
 
         private ObservableCollection<CaptureSubject> _models;
 
-        private ObservableCollection<KeyValuePair<int, int>> _deltaCount;
+        private ObservableCollection<KeyValuePair<DateTime, int>> _deltaCount;
 
         public SessionViewModel(CaptureSession session) : this()
         {
             this.Session = session;
+            Settings.CountIntervalChanged += Settings_CountIntervalChanged;
         }
 
         public SessionViewModel()
         {
             this._models = new ObservableCollection<CaptureSubject>();
-            this._deltaCount = new ObservableCollection<KeyValuePair<int, int>>();
+            this._deltaCount = new ObservableCollection<KeyValuePair<DateTime, int>>();
             this.Session = null;
         }
 
@@ -38,7 +39,7 @@ namespace TweetTracker.ViewModels
             }
         }
 
-        public ObservableCollection<KeyValuePair<int, int>> DeltaCount
+        public ObservableCollection<KeyValuePair<DateTime, int>> DeltaCount
         {
             get
             {
@@ -95,9 +96,16 @@ namespace TweetTracker.ViewModels
 
                     var deltaCount = ((KeyValuePair<int, int>)newItem).Value - oldCount;
                     
-                    Application.Current.Dispatcher.BeginInvoke(new Action(() =>this.DeltaCount.Add(new KeyValuePair<int, int>(((KeyValuePair<int, int>)newItem).Key / 1000, deltaCount))));                    
+                    Application.Current.Dispatcher.BeginInvoke(new Action(() => this.DeltaCount.Add(new KeyValuePair<DateTime, int>(DateTime.Now, deltaCount))));                    
                 }
             }
+
+            if(this.DeltaCount.Count > Settings.CountIntervalIncrementer)
+            {
+                this.DeltaCount.RemoveOneInTwoListItems();
+            }
+
+            this.Models = new ObservableCollection<CaptureSubject>(this.Models.OrderBy(cpSub => cpSub.AllStatusCount));
         }
 
         public ObservableCollection<CaptureSubject> Models
@@ -114,17 +122,19 @@ namespace TweetTracker.ViewModels
             }
         }
 
-    }
-
-     class Model
-    {
-        public Model(string key, int count)
+        /// <summary>
+        /// When the count interval is changed, remove 50% of all the
+        /// CaptureSubject count intervals
+        /// </summary>
+        private void Settings_CountIntervalChanged(object sender, EventArgs e)
         {
-            this.Key = key;
-            this.Count = count;
+            // TODO: Ensure the data is maintained in the model
+            
+            if(this.Session != null)
+            {
+                this.Session.Subjects.ToList().ForEach(kvp => kvp.Value.StatusCountAtTime.RemoveOneInTwoListItems());
+            }
         }
 
-        public string Key {get; private set;}
-        public int Count {get; private set;}
     }
 }

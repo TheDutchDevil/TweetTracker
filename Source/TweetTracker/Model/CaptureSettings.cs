@@ -28,11 +28,11 @@ namespace TweetTracker.Model
             {
                 if(string.IsNullOrWhiteSpace(row.Key))
                 {
-                    throw new Exception("Key cannot be empty");
+                    throw new ArgumentException("Key cannot be empty");
                 }
                 if(string.IsNullOrWhiteSpace(row.Values))
                 {
-                    throw new Exception("Values field cannot be empty");
+                    throw new ArgumentException("Values field cannot be empty");
                 }
 
                 var keywords = row.Values.Split(';').ToList();

@@ -1,0 +1,549 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FxCopProject Version="10.0" Name="My FxCop Project">
+ <ProjectOptions>
+  <SharedProject>True</SharedProject>
+  <Stylesheet Apply="False">$(FxCopDir)\Xml\FxCopReport.xsl</Stylesheet>
+  <SaveMessages>
+   <Project Status="Active, Excluded, Good, Noise" NewOnly="False" />
+   <Report Status="Active, Good, Noise" NewOnly="False" />
+  </SaveMessages>
+  <ProjectFile Compress="True" DefaultTargetCheck="True" DefaultRuleCheck="True" SaveByRuleGroup="" Deterministic="True" />
+  <EnableMultithreadedLoad>True</EnableMultithreadedLoad>
+  <EnableMultithreadedAnalysis>True</EnableMultithreadedAnalysis>
+  <SourceLookup>True</SourceLookup>
+  <AnalysisExceptionsThreshold>10</AnalysisExceptionsThreshold>
+  <RuleExceptionsThreshold>1</RuleExceptionsThreshold>
+  <Spelling Locale="en-US" />
+  <OverrideRuleVisibilities>False</OverrideRuleVisibilities>
+  <CustomDictionaries SearchFxCopDir="True" SearchUserProfile="True" SearchProjectDir="True" />
+  <SearchGlobalAssemblyCache>False</SearchGlobalAssemblyCache>
+  <DeadlockDetectionTimeout>120</DeadlockDetectionTimeout>
+  <IgnoreGeneratedCode>False</IgnoreGeneratedCode>
+ </ProjectOptions>
+ <Targets>
+  <Target Name="$(ProjectDir)/../../Build/Debug/TweetTracker.exe" Analyze="True" AnalyzeAllChildren="True" />
+ </Targets>
+ <Rules>
+  <RuleFiles>
+   <RuleFile Name="$(FxCopDir)\Rules\DesignRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\GlobalizationRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\InteroperabilityRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\MobilityRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\NamingRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\PerformanceRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\PortabilityRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\SecurityRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\SecurityTransparencyRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\UsageRules.dll" Enabled="True" AllRulesEnabled="True" />
+  </RuleFiles>
+  <Groups />
+  <Settings />
+ </Rules>
+ <FxCopReport Version="10.0">
+  <Targets>
+   <Target Name="$(ProjectDir)/../../Build/Debug/TweetTracker.exe">
+    <Modules>
+     <Module Name="tweettracker.exe">
+      <Messages>
+       <Message TypeName="AssembliesShouldHaveValidStrongNames" Category="Microsoft.Design" CheckId="CA2210" Status="Excluded" Created="2013-12-13 21:35:50Z">
+        <Issue Name="NoStrongName">
+         <Item>'TweetTracker.exe'</Item>
+        </Issue>
+        <Notes>
+         <User Name="Nathan">
+          <Note Id="1" />
+         </User>
+        </Notes>
+       </Message>
+      </Messages>
+      <Namespaces>
+       <Namespace Name="TweetTracker">
+        <Types>
+         <Type Name="CaptureSessionView">
+          <Members>
+           <Member Name="#_CreateDelegate(System.Type,System.String)">
+            <Messages>
+             <Message TypeName="AvoidUncalledPrivateCode" Category="Microsoft.Performance" CheckId="CA1811" Status="Excluded" Created="2013-12-13 21:35:50Z">
+              <Issue>
+               <Item>'CaptureSessionView._CreateDelegate(Type, string)'</Item>
+              </Issue>
+              <Notes>
+               <User Name="Nathan">
+                <Note Id="10" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="MainWindow">
+          <Members>
+           <Member Name="#_CreateDelegate(System.Type,System.String)">
+            <Messages>
+             <Message TypeName="AvoidUncalledPrivateCode" Category="Microsoft.Performance" CheckId="CA1811" Status="Excluded" Created="2013-12-13 21:35:50Z">
+              <Issue>
+               <Item>'MainWindow._CreateDelegate(Type, string)'</Item>
+              </Issue>
+              <Notes>
+               <User Name="Nathan">
+                <Note Id="11" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="RelayCommand">
+          <Members>
+           <Member Name="#.ctor(System.Action,System.Predicate`1&lt;System.Object&gt;)">
+            <Messages>
+             <Message TypeName="AvoidUncalledPrivateCode" Category="Microsoft.Performance" CheckId="CA1811" Created="2013-12-13 21:35:50Z">
+              <Issue>
+               <Item>'RelayCommand.RelayCommand(Action, Predicate&lt;object&gt;)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="Settings">
+          <Members>
+           <Member Name="#.cctor()">
+            <Messages>
+             <Message TypeName="InitializeReferenceTypeStaticFieldsInline" Category="Microsoft.Performance" CheckId="CA1810" Status="Excluded" Created="2013-12-13 21:35:50Z">
+              <Issue>
+               <Item>'Settings'</Item>
+              </Issue>
+              <Notes>
+               <User Name="Nathan">
+                <Note Id="3" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#CountIntervalIncrementer">
+            <Messages>
+             <Message Id="Incrementer" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2013-12-13 21:35:50Z">
+              <Issue Name="Member">
+               <Item>Incrementer</Item>
+               <Item>'Settings.CountIntervalIncrementer'</Item>
+              </Issue>
+              <Notes>
+               <User Name="Nathan">
+                <Note Id="0" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+        </Types>
+       </Namespace>
+       <Namespace Name="TweetTracker.Model">
+        <Types>
+         <Type Name="CaptureSession">
+          <Messages>
+           <Message TypeName="TypesThatOwnDisposableFieldsShouldBeDisposable" Category="Microsoft.Design" CheckId="CA1001" Created="2013-12-13 21:35:50Z" FixCategory="NonBreaking">
+            <Issue Name="NonBreaking">
+             <Item>'CaptureSession'</Item>
+             <Item>'TwitterContext', 'Timer'</Item>
+            </Issue>
+           </Message>
+          </Messages>
+          <Members>
+           <Member Name="#_allTweetsStreaming">
+            <Messages>
+             <Message TypeName="AvoidUnusedPrivateFields" Category="Microsoft.Performance" CheckId="CA1823" Created="2013-12-13 21:35:50Z">
+              <Issue>
+               <Item>'CaptureSession._allTweetsStreaming'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#_startedAt">
+            <Messages>
+             <Message TypeName="AvoidUnusedPrivateFields" Category="Microsoft.Performance" CheckId="CA1823" Created="2013-12-13 21:35:50Z">
+              <Issue>
+               <Item>'CaptureSession._startedAt'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="CaptureSubject">
+          <Messages>
+           <Message TypeName="TypesThatOwnDisposableFieldsShouldBeDisposable" Category="Microsoft.Design" CheckId="CA1001" Created="2013-12-13 21:35:50Z" FixCategory="NonBreaking">
+            <Issue Name="NonBreaking">
+             <Item>'CaptureSubject'</Item>
+             <Item>'Timer'</Item>
+            </Issue>
+           </Message>
+          </Messages>
+         </Type>
+        </Types>
+       </Namespace>
+       <Namespace Name="TweetTracker.ViewModels">
+        <Types>
+         <Type Name="CaptureSettingsViewModel">
+          <Members>
+           <Member Name="#AddCommand">
+            <Accessors>
+             <Accessor Name="#get_AddCommand()">
+              <Messages>
+               <Message TypeName="AvoidUncalledPrivateCode" Category="Microsoft.Performance" CheckId="CA1811" Status="Excluded" Created="2013-12-13 21:35:50Z">
+                <Issue>
+                 <Item>'CaptureSettingsViewModel.AddCommand.get()'</Item>
+                </Issue>
+                <Notes>
+                 <User Name="Nathan">
+                  <Note Id="5" />
+                 </User>
+                </Notes>
+               </Message>
+              </Messages>
+             </Accessor>
+            </Accessors>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="EditableSettingsRowViewModel">
+          <Members>
+           <Member Name="#DeleteCommand">
+            <Accessors>
+             <Accessor Name="#get_DeleteCommand()">
+              <Messages>
+               <Message TypeName="AvoidUncalledPrivateCode" Category="Microsoft.Performance" CheckId="CA1811" Status="Excluded" Created="2013-12-13 21:35:50Z">
+                <Issue>
+                 <Item>'EditableSettingsRowViewModel.DeleteCommand.get()'</Item>
+                </Issue>
+                <Notes>
+                 <User Name="Nathan">
+                  <Note Id="2" />
+                 </User>
+                </Notes>
+               </Message>
+              </Messages>
+             </Accessor>
+            </Accessors>
+           </Member>
+           <Member Name="#Key">
+            <Accessors>
+             <Accessor Name="#set_Key(System.String)">
+              <Messages>
+               <Message TypeName="AvoidUncalledPrivateCode" Category="Microsoft.Performance" CheckId="CA1811" Status="Excluded" Created="2013-12-13 21:35:50Z">
+                <Issue>
+                 <Item>'EditableSettingsRowViewModel.Key.set(string)'</Item>
+                </Issue>
+                <Notes>
+                 <User Name="Nathan">
+                  <Note Id="9" />
+                 </User>
+                </Notes>
+               </Message>
+              </Messages>
+             </Accessor>
+            </Accessors>
+           </Member>
+           <Member Name="#Values">
+            <Accessors>
+             <Accessor Name="#set_Values(System.String)">
+              <Messages>
+               <Message TypeName="AvoidUncalledPrivateCode" Category="Microsoft.Performance" CheckId="CA1811" Status="Excluded" Created="2013-12-13 21:35:50Z">
+                <Issue>
+                 <Item>'EditableSettingsRowViewModel.Values.set(string)'</Item>
+                </Issue>
+                <Notes>
+                 <User Name="Nathan">
+                  <Note Id="8" />
+                 </User>
+                </Notes>
+               </Message>
+              </Messages>
+             </Accessor>
+            </Accessors>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="MainViewModel">
+          <Members>
+           <Member Name="#SessionStarted">
+            <Accessors>
+             <Accessor Name="#get_SessionStarted()">
+              <Messages>
+               <Message TypeName="AvoidUncalledPrivateCode" Category="Microsoft.Performance" CheckId="CA1811" Status="Excluded" Created="2013-12-13 21:35:50Z">
+                <Issue>
+                 <Item>'MainViewModel.SessionStarted.get()'</Item>
+                </Issue>
+                <Notes>
+                 <User Name="Nathan">
+                  <Note Id="6" />
+                 </User>
+                </Notes>
+               </Message>
+              </Messages>
+             </Accessor>
+            </Accessors>
+           </Member>
+           <Member Name="#StartCommand">
+            <Accessors>
+             <Accessor Name="#get_StartCommand()">
+              <Messages>
+               <Message TypeName="AvoidUncalledPrivateCode" Category="Microsoft.Performance" CheckId="CA1811" Status="Excluded" Created="2013-12-13 21:35:50Z">
+                <Issue>
+                 <Item>'MainViewModel.StartCommand.get()'</Item>
+                </Issue>
+                <Notes>
+                 <User Name="Nathan">
+                  <Note Id="7" />
+                 </User>
+                </Notes>
+               </Message>
+              </Messages>
+             </Accessor>
+            </Accessors>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="SessionViewModel">
+          <Members>
+           <Member Name="#.ctor(TweetTracker.Model.CaptureSession)">
+            <Messages>
+             <Message TypeName="AvoidUncalledPrivateCode" Category="Microsoft.Performance" CheckId="CA1811" Status="Excluded" Created="2013-12-13 21:35:50Z">
+              <Issue>
+               <Item>'SessionViewModel.SessionViewModel(CaptureSession)'</Item>
+              </Issue>
+              <Notes>
+               <User Name="Nathan">
+                <Note Id="4" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#ModelsHeight">
+            <Accessors>
+             <Accessor Name="#get_ModelsHeight()">
+              <Messages>
+               <Message TypeName="AvoidUncalledPrivateCode" Category="Microsoft.Performance" CheckId="CA1811" Status="Excluded" Created="2013-12-13 21:35:50Z">
+                <Issue>
+                 <Item>'SessionViewModel.ModelsHeight.get()'</Item>
+                </Issue>
+                <Notes>
+                 <User Name="Nathan">
+                  <Note Id="12" />
+                 </User>
+                </Notes>
+               </Message>
+              </Messages>
+             </Accessor>
+            </Accessors>
+           </Member>
+          </Members>
+         </Type>
+        </Types>
+       </Namespace>
+      </Namespaces>
+      <Resources>
+       <Resource Name="TweetTracker.Properties.Resources.resources">
+        <Messages>
+         <Message Id="Bz" TypeName="ResourceStringsShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1703" Created="2013-12-13 23:12:22Z">
+          <Issue Name="StringResource">
+           <Item>'TweetTracker.Properties.Resources.resx'</Item>
+           <Item>ConsumerSecret</Item>
+           <Item>Bz</Item>
+           <Item>H6wcO90BKC3SSDNAnH1ZX5V7u2NBJ7qSwfqBzTaFTMw</Item>
+          </Issue>
+          <Notes>
+           <User Name="Nathan">
+            <Note Id="16" />
+           </User>
+          </Notes>
+         </Message>
+         <Message Id="Hlb" TypeName="ResourceStringsShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1703" Created="2013-12-13 23:12:22Z">
+          <Issue Name="StringResource">
+           <Item>'TweetTracker.Properties.Resources.resx'</Item>
+           <Item>OAuthAccessToken</Item>
+           <Item>Hlb</Item>
+           <Item>e56rCF12AnHHM2gGAxHlbIKpgFJXfr5KIm9lV9NqP9vNv</Item>
+          </Issue>
+          <Notes>
+           <User Name="Nathan">
+            <Note Id="15" />
+           </User>
+          </Notes>
+         </Message>
+         <Message Id="Hrc" TypeName="ResourceStringsShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1703" Created="2013-12-13 23:12:22Z">
+          <Issue Name="StringResource">
+           <Item>'TweetTracker.Properties.Resources.resx'</Item>
+           <Item>ConsumerKey</Item>
+           <Item>Hrc</Item>
+           <Item>nnBgHuiVHrcPuxWHgPfZ5Q</Item>
+          </Issue>
+          <Notes>
+           <User Name="Nathan">
+            <Note Id="16" />
+           </User>
+          </Notes>
+         </Message>
+         <Message Id="Hui" TypeName="ResourceStringsShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1703" Created="2013-12-13 23:12:22Z">
+          <Issue Name="StringResource">
+           <Item>'TweetTracker.Properties.Resources.resx'</Item>
+           <Item>ConsumerKey</Item>
+           <Item>Hui</Item>
+           <Item>nnBgHuiVHrcPuxWHgPfZ5Q</Item>
+          </Issue>
+          <Notes>
+           <User Name="Nathan">
+            <Note Id="16" />
+           </User>
+          </Notes>
+         </Message>
+         <Message Id="Kpg" TypeName="ResourceStringsShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1703" Created="2013-12-13 23:12:22Z">
+          <Issue Name="StringResource">
+           <Item>'TweetTracker.Properties.Resources.resx'</Item>
+           <Item>OAuthAccessToken</Item>
+           <Item>Kpg</Item>
+           <Item>e56rCF12AnHHM2gGAxHlbIKpgFJXfr5KIm9lV9NqP9vNv</Item>
+          </Issue>
+          <Notes>
+           <User Name="Nathan">
+            <Note Id="16" />
+           </User>
+          </Notes>
+         </Message>
+         <Message Id="Pux" TypeName="ResourceStringsShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1703" Created="2013-12-13 23:12:22Z">
+          <Issue Name="StringResource">
+           <Item>'TweetTracker.Properties.Resources.resx'</Item>
+           <Item>ConsumerKey</Item>
+           <Item>Pux</Item>
+           <Item>nnBgHuiVHrcPuxWHgPfZ5Q</Item>
+          </Issue>
+          <Notes>
+           <User Name="Nathan">
+            <Note Id="16" />
+           </User>
+          </Notes>
+         </Message>
+         <Message Id="Swfq" TypeName="ResourceStringsShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1703" Created="2013-12-13 23:12:22Z">
+          <Issue Name="StringResource">
+           <Item>'TweetTracker.Properties.Resources.resx'</Item>
+           <Item>ConsumerSecret</Item>
+           <Item>Swfq</Item>
+           <Item>H6wcO90BKC3SSDNAnH1ZX5V7u2NBJ7qSwfqBzTaFTMw</Item>
+          </Issue>
+          <Notes>
+           <User Name="Nathan">
+            <Note Id="14" />
+           </User>
+          </Notes>
+         </Message>
+         <Message Id="Tcr" TypeName="ResourceStringsShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1703" Created="2013-12-13 23:12:22Z">
+          <Issue Name="StringResource">
+           <Item>'TweetTracker.Properties.Resources.resx'</Item>
+           <Item>OAuthToken</Item>
+           <Item>Tcr</Item>
+           <Item>2223745777-wOZHTcrIsWL1If82U03KZN4TxyzaQCAg6D7Y1Fn</Item>
+          </Issue>
+          <Notes>
+           <User Name="Nathan">
+            <Note Id="16" />
+           </User>
+          </Notes>
+         </Message>
+         <Message Id="Txyza" TypeName="ResourceStringsShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1703" Created="2013-12-13 23:12:22Z">
+          <Issue Name="StringResource">
+           <Item>'TweetTracker.Properties.Resources.resx'</Item>
+           <Item>OAuthToken</Item>
+           <Item>Txyza</Item>
+           <Item>2223745777-wOZHTcrIsWL1If82U03KZN4TxyzaQCAg6D7Y1Fn</Item>
+          </Issue>
+          <Notes>
+           <User Name="Nathan">
+            <Note Id="16" />
+           </User>
+          </Notes>
+         </Message>
+         <Message Id="Xfr" TypeName="ResourceStringsShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1703" Created="2013-12-13 23:12:22Z">
+          <Issue Name="StringResource">
+           <Item>'TweetTracker.Properties.Resources.resx'</Item>
+           <Item>OAuthAccessToken</Item>
+           <Item>Xfr</Item>
+           <Item>e56rCF12AnHHM2gGAxHlbIKpgFJXfr5KIm9lV9NqP9vNv</Item>
+          </Issue>
+          <Notes>
+           <User Name="Nathan">
+            <Note Id="13" />
+           </User>
+          </Notes>
+         </Message>
+         <Message Id="nn" TypeName="ResourceStringsShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1703" Created="2013-12-13 23:12:22Z">
+          <Issue Name="StringResource">
+           <Item>'TweetTracker.Properties.Resources.resx'</Item>
+           <Item>ConsumerKey</Item>
+           <Item>nn</Item>
+           <Item>nnBgHuiVHrcPuxWHgPfZ5Q</Item>
+          </Issue>
+          <Notes>
+           <User Name="Nathan">
+            <Note Id="16" />
+           </User>
+          </Notes>
+         </Message>
+        </Messages>
+       </Resource>
+      </Resources>
+     </Module>
+    </Modules>
+   </Target>
+  </Targets>
+  <Notes>
+   <User Name="Nathan">
+    <Note Id="0" Modified="2013-12-13 21:57:21Z">Is spelled correctly</Note>
+    <Note Id="1" Modified="2013-12-13 21:58:51Z">Not viable at the moment</Note>
+    <Note Id="2" Modified="2013-12-13 22:14:57Z">Called by the ViewModel</Note>
+    <Note Id="3" Modified="2013-12-13 22:20:40Z">Static constructor cannot be removed</Note>
+    <Note Id="4" Modified="2013-12-13 22:29:45Z">Code is called</Note>
+    <Note Id="5" Modified="2013-12-13 22:31:12Z">Called by the View</Note>
+    <Note Id="6" Modified="2013-12-13 22:31:25Z">Called by the View</Note>
+    <Note Id="7" Modified="2013-12-13 22:31:32Z">Called by the View</Note>
+    <Note Id="8" Modified="2013-12-13 22:31:42Z">Called by the View</Note>
+    <Note Id="9" Modified="2013-12-13 22:31:59Z">Called by the View</Note>
+    <Note Id="10" Modified="2013-12-13 22:32:25Z">generated code</Note>
+    <Note Id="11" Modified="2013-12-13 22:32:31Z">Generated code</Note>
+    <Note Id="12" Modified="2013-12-13 22:37:36Z">Called by the View</Note>
+    <Note Id="13" Modified="2013-12-13 23:12:40Z">Valid name</Note>
+    <Note Id="14" Modified="2013-12-13 23:12:46Z">valid name</Note>
+    <Note Id="15" Modified="2013-12-13 23:12:50Z">valid name</Note>
+    <Note Id="16" Modified="2013-12-13 23:12:59Z">valid name</Note>
+   </User>
+  </Notes>
+  <Rules>
+   <Rule TypeName="AssembliesShouldHaveValidStrongNames" Category="Microsoft.Design" CheckId="CA2210">
+    <Resolution Name="NoStrongName">Sign {0} with a strong name key.</Resolution>
+   </Rule>
+   <Rule TypeName="AvoidUncalledPrivateCode" Category="Microsoft.Performance" CheckId="CA1811">
+    <Resolution Name="Default">{0} appears to have no upstream public or protected callers.</Resolution>
+   </Rule>
+   <Rule TypeName="AvoidUnusedPrivateFields" Category="Microsoft.Performance" CheckId="CA1823">
+    <Resolution Name="Default">It appears that field {0} is never used or is only ever assigned to. Use this field or remove it.</Resolution>
+   </Rule>
+   <Rule TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704">
+    <Resolution Name="Member">Correct the spelling of '{0}' in member name {1} or remove it entirely if it represents any sort of Hungarian notation.</Resolution>
+   </Rule>
+   <Rule TypeName="InitializeReferenceTypeStaticFieldsInline" Category="Microsoft.Performance" CheckId="CA1810">
+    <Resolution Name="Default">Initialize all static fields in {0} when those fields are declared and remove the explicit static constructor.</Resolution>
+   </Rule>
+   <Rule TypeName="ResourceStringsShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1703">
+    <Resolution Name="StringResource">In resource {0}, referenced by name '{1}', correct the spelling of '{2}' in string value '{3}'.</Resolution>
+   </Rule>
+   <Rule TypeName="TypesThatOwnDisposableFieldsShouldBeDisposable" Category="Microsoft.Design" CheckId="CA1001">
+    <Resolution Name="NonBreaking">Implement IDisposable on {0} because it creates members of the following IDisposable types: {1}.</Resolution>
+   </Rule>
+  </Rules>
+ </FxCopReport>
+</FxCopProject>
