@@ -144,8 +144,8 @@ namespace TweetTracker.Model
             this._countAtInterval.Clear();
             this._timer = new System.Timers.Timer(Settings.CountInterval);
             Settings.Reset();
-            this._timer.Elapsed += (sedner, e) => this._countAtInterval.Add(
-                new KeyValuePair<int, int>(this._countAtInterval.Count * Settings.CountInterval, this.AllTweetsCount));
+            this._timer.Elapsed += (sender, e) => this._countAtInterval.Add(
+                new KeyValuePair<int, int>(this._countAtInterval.Max(kvp => kvp.Key) + Settings.CountInterval / 1000, this.AllTweetsCount));
             this._countAtInterval.Add(
                 new KeyValuePair<int, int>(this._countAtInterval.Count * Settings.CountInterval, 0));
             this._timer.Start();

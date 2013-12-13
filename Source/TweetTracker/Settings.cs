@@ -34,7 +34,7 @@ namespace TweetTracker
 
         public static void Reset()
         {
-            CountInterval = 30000;
+            CountInterval = 5000;
             CountIntervalIncrementer = 50;
             _timer.Stop();
             _timer.Interval = CountInterval * CountIntervalIncrementer;

@@ -14,7 +14,7 @@ namespace TweetTracker
         {
             for (int i = collection.Count - 1; i >= 0; i--)
             {
-                if (collection.IndexOf(collection.ElementAt(i)) % 2 == 0)
+                if (collection.IndexOf(collection.ElementAt(i)) % 2 != 0)
                 {
                     Application.Current.Dispatcher.Invoke(() => collection.RemoveAt(i));
                 }

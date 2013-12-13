@@ -31,7 +31,7 @@ namespace TweetTracker.Model
             this._statusCountAtTime = new ObservableCollection<KeyValuePair<int, int>>();
             this._timer = new Timer(Settings.CountInterval);
             this._timer.Elapsed += (sender, e) => 
-                Application.Current.Dispatcher.Invoke(new Action(() => this._statusCountAtTime.Add(new KeyValuePair<int,int>((Settings.CountInterval / 1000) * this._statusCountAtTime.Count, (int) this.AllStatusCount))));
+                Application.Current.Dispatcher.Invoke(new Action(() => this._statusCountAtTime.Add(new KeyValuePair<int,int>(this.StatusCountAtTime.Max(kvp => kvp.Key) + Settings.CountInterval / 1000, (int) this.AllStatusCount))));
             this._timer.Start();
 
             Settings.CountIntervalChanged += Settings_CountIntervalChanged;

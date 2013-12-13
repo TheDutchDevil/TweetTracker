@@ -72,6 +72,8 @@ namespace TweetTracker.ViewModels
                     this.Session.Subjects.Values.ToList().ForEach(capSub => this.Models.Add(capSub));
 
                     this.Session.CountAtInterval.CollectionChanged += CountAtInterval_CollectionChanged;
+
+                    Settings.CountIntervalChanged += this.Settings_CountIntervalChanged;
                 }
 
                 this.OnPropertyChanged("Session");
