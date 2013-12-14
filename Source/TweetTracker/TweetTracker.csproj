@@ -78,6 +78,8 @@
     <Compile Include="Model\CaptureSession.cs" />
     <Compile Include="Model\CaptureSettings.cs" />
     <Compile Include="Model\CaptureSubject.cs" />
+    <Compile Include="Model\InformationProviders\IProvide.cs" />
+    <Compile Include="Model\InformationProviders\TwitterServiceProvider.cs" />
     <Compile Include="RelayCommand.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />

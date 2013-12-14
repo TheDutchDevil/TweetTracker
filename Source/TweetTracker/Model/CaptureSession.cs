@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using TweetTracker.Model.InformationProviders;
 using TweetTracker.Properties;
 using TweetTracker.ViewModels;
 
@@ -17,7 +18,7 @@ namespace TweetTracker.Model
 {
     sealed class CaptureSession : BaseViewModel
     {
-        private TwitterContext _context;
+        private IProvide _provider;
 
         private CaptureSettings _settings;
 
@@ -26,8 +27,6 @@ namespace TweetTracker.Model
         private bool _isRunning = false;
 
         private int _tweetCount = 0;
-
-        private Streaming _allTweetsStreaming;
 
         private DateTime _startedAt;
 
@@ -39,24 +38,11 @@ namespace TweetTracker.Model
         {
             // TODO: Inject a tweet serivce here
 
+            this._provider = new TwitterServiceProvider();
+            this._timer = new System.Timers.Timer(Settings.CountInterval);
+
             this._settings = settings;
             this._countAtInterval = new ObservableCollection<KeyValuePair<int, int>>();
-
-            var auth = new SingleUserAuthorizer
-            {
-                Credentials = new InMemoryCredentials
-                {
-                    ConsumerKey = Resources.ConsumerKey,
-                    ConsumerSecret = Resources.ConsumerSecret,
-                    OAuthToken = Resources.OAuthToken,
-                    AccessToken = Resources.OAuthAccessToken
-                    
-                }
-            };
-
-            auth.Authorize();
-
-            this._context = new TwitterContext(auth);
 
             this._captureSubjects = new Dictionary<string, CaptureSubject>();
 
@@ -135,15 +121,16 @@ namespace TweetTracker.Model
                 trackstringBuilder.Append(this._settings.HashTag.Replace("#", string.Empty));
             }
 
-            Settings.Reset();
+            this._provider.StopListening();
 
-            this._allTweetsStreaming = (from stream in this._context.Streaming
-                                        where stream.Type == StreamingType.Filter &&
-                                        stream.Track == trackstringBuilder.ToString()
-                                        select stream).StreamingCallback(this.HandleTweet).SingleOrDefault();
+            Settings.Reset();
+            this._countAtInterval.Clear();
+
+            this._provider.SetSearchString(trackstringBuilder.ToString());
+            this._provider.StartListening(this.HandleTweet);
 
             this._startedAt = DateTime.Now;
-            this._countAtInterval.Clear();
+            this._timer.Stop();
             this._timer = new System.Timers.Timer(Settings.CountInterval);
             this._timer.Elapsed += (sender, e) => this._countAtInterval.Add(
                 new KeyValuePair<int, int>(this._countAtInterval.Max(kvp => kvp.Key) + Settings.CountInterval / 1000, this.AllTweetsCount));
