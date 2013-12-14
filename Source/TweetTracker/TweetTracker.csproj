@@ -83,6 +83,7 @@
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\CaptureSettingsViewModel.cs" />
     <Compile Include="ViewModels\Converters\VisibilityConverter.cs" />
+    <Compile Include="ViewModels\DataModel\CaptureSubjectMapper.cs" />
     <Compile Include="ViewModels\EditableSettingsRowViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\SessionViewModel.cs" />

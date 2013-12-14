@@ -52,13 +52,14 @@
             </vis:Chart>
 
             <local:MultipleChart 
-                SeriesSource="{Binding Path=Session.Subjects.Values}" 
+                 SeriesSource="{Binding Path=Session.Subjects.Values}" 
             Width="700" Height="400">
                 <local:MultipleChart.SeriesTemplate >
                     <DataTemplate >
                         <vis:LineSeries
-			       Title="{Binding Key}"
+			       			       			       Title="{Binding Key}"
 			       ItemsSource="{Binding StatusCountAtTime}"
+
 			       IndependentValueBinding="{Binding Key}"
 			       DependentValueBinding="{Binding Value}" />
                     </DataTemplate>

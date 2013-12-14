@@ -135,6 +135,8 @@ namespace TweetTracker.Model
                 trackstringBuilder.Append(this._settings.HashTag.Replace("#", string.Empty));
             }
 
+            Settings.Reset();
+
             this._allTweetsStreaming = (from stream in this._context.Streaming
                                         where stream.Type == StreamingType.Filter &&
                                         stream.Track == trackstringBuilder.ToString()
@@ -143,7 +145,6 @@ namespace TweetTracker.Model
             this._startedAt = DateTime.Now;
             this._countAtInterval.Clear();
             this._timer = new System.Timers.Timer(Settings.CountInterval);
-            Settings.Reset();
             this._timer.Elapsed += (sender, e) => this._countAtInterval.Add(
                 new KeyValuePair<int, int>(this._countAtInterval.Max(kvp => kvp.Key) + Settings.CountInterval / 1000, this.AllTweetsCount));
             this._countAtInterval.Add(

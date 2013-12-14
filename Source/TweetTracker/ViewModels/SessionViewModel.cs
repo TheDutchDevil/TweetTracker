@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
 using TweetTracker.Model;
+using TweetTracker.ViewModels.DataModel;
 
 namespace TweetTracker.ViewModels
 {
@@ -18,6 +19,8 @@ namespace TweetTracker.ViewModels
 
         private ObservableCollection<KeyValuePair<DateTime, int>> _deltaCount;
 
+        private ObservableCollection<CaptureSubjectMapper> _subjects;
+
         public SessionViewModel(CaptureSession session) : this()
         {
             this.Session = session;
@@ -28,6 +31,7 @@ namespace TweetTracker.ViewModels
         {
             this._models = new ObservableCollection<CaptureSubject>();
             this._deltaCount = new ObservableCollection<KeyValuePair<DateTime, int>>();
+            this.Subjects = new ObservableCollection<CaptureSubjectMapper>();
             this.Session = null;
         }
 
@@ -74,14 +78,22 @@ namespace TweetTracker.ViewModels
                     this.Session.CountAtInterval.CollectionChanged += CountAtInterval_CollectionChanged;
 
                     Settings.CountIntervalChanged += this.Settings_CountIntervalChanged;
+
+                    this.Subjects.Clear();
+
+                    foreach(var subject in this.Session.Subjects)
+                    {
+                        this.Subjects.Add(new CaptureSubjectMapper(subject.Value));
+                    }
                 }
 
                 this.OnPropertyChanged("Session");
+                this.OnPropertyChanged("Subjects");
                 this.OnPropertyChanged("ModelsHeight");
             }
         }
 
-        void CountAtInterval_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        private void CountAtInterval_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             if (e.NewItems != null)
             {
@@ -102,12 +114,21 @@ namespace TweetTracker.ViewModels
                 }
             }
 
-            if(this.DeltaCount.Count > Settings.CountIntervalIncrementer)
+            this.Models = new ObservableCollection<CaptureSubject>(this.Models.OrderBy(cpSub => cpSub.AllStatusCount));
+        }
+
+        public ObservableCollection<CaptureSubjectMapper> Subjects
+        {
+            get
             {
-                this.DeltaCount.RemoveOneInTwoListItems();
+                return this._subjects;
             }
 
-            this.Models = new ObservableCollection<CaptureSubject>(this.Models.OrderBy(cpSub => cpSub.AllStatusCount));
+            set
+            {
+                this._subjects = value;
+                this.OnPropertyChanged("Subjects");
+            }
         }
 
         public ObservableCollection<CaptureSubject> Models
@@ -136,6 +157,8 @@ namespace TweetTracker.ViewModels
             {
                 this.Session.Subjects.ToList().ForEach(kvp => kvp.Value.StatusCountAtTime.RemoveOneInTwoListItems());
             }
+           
+                this.DeltaCount.RemoveOneInTwoListItems();
         }
 
     }
