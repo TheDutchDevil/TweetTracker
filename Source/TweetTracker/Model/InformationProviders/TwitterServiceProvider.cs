@@ -93,8 +93,6 @@ namespace TweetTracker.Model.InformationProviders
                                         stream.Track == this._currentSearchString.ToString()
                                         select stream).StreamingCallback((con) => this._listener(con)).SingleOrDefault();
 
-
-
         }
     }
 }

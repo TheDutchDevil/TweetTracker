@@ -82,7 +82,7 @@ namespace TweetTracker.Model
             }
         }
 
-        public void StartUpdate()
+        public void StartCapture()
         {
          
             if(!this._isRunning)
@@ -93,11 +93,24 @@ namespace TweetTracker.Model
             }
         }
 
+        public void StopCapture()
+        {
+            if(this._isRunning)
+            {
+                this._provider.StopListening();
+                
+                foreach(var subject in this._captureSubjects)
+                {
+                    subject.Value.StopAccepting();
+                }
+
+                Settings.CountIntervalChanged -= this.Settings_CountIntervalChanged;
+            }
+        }
+
         private void Update()
         {
             this.AppendToAllTweets();
-
-            this._isRunning = false;
         }
 
         private void AppendToAllTweets()

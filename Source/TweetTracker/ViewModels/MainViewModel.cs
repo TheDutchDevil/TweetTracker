@@ -16,6 +16,7 @@ namespace TweetTracker.ViewModels
         {
             this.Settings = new CaptureSettingsViewModel();
             this.StartCommand = new RelayCommand(this.PrepareForCapture);
+            this.StopCommand = new RelayCommand(this.StopCapture);
             this.Session = new SessionViewModel();
         }
 
@@ -23,6 +24,12 @@ namespace TweetTracker.ViewModels
         public CaptureSettingsViewModel Settings { get; private set; }
 
         public RelayCommand StartCommand
+        {
+            get;
+            private set;
+        }
+
+        public RelayCommand StopCommand
         {
             get;
             private set;
@@ -44,14 +51,31 @@ namespace TweetTracker.ViewModels
 
         public bool SessionStarted { get; private set; }
 
+        public bool SessionNotStarted
+        {
+            get
+            {
+                return !this.SessionStarted;
+            }
+        }
+
         private void PrepareForCapture()
         {
             var settings = new CaptureSettings(this.Settings);
             var capSession = new CaptureSession(settings);
-            capSession.StartUpdate();
             this.SessionStarted = true;
-            this.Session.Session = capSession;
+            this.Session.StartCapture(capSession);
             this.OnPropertyChanged("SessionStarted");
+            this.OnPropertyChanged("SessionNotStarted");
+        }
+
+        private void StopCapture()
+        {
+            this.Session.StopCapture();
+
+            this.SessionStarted = false;
+            this.OnPropertyChanged("SessionStarted");
+            this.OnPropertyChanged("SessionNotStarted");
         }
     }
 }

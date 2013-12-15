@@ -20,16 +20,26 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         
-        <Button Content="Start capture" Command="{Binding StartCommand}" Grid.Row="1" Grid.Column="1"/>
+        <Button 
+            Content="Start capture" 
+            Command="{Binding StartCommand}" 
+            Grid.Row="1" Grid.Column="1" 
+            IsEnabled="{Binding SessionNotStarted}"/>
 
-        <Expander Header="Capture settings" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="4">
+        <Button 
+            Content="Stop capture" 
+            Command="{Binding StopCommand}" 
+            Grid.Row="1" Grid.Column="3" 
+            IsEnabled="{Binding SessionStarted}"/>
+        
+        <Expander Header="Capture settings" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="6">
             
             <ContentPresenter Content="{Binding Settings}" ContentTemplate="{StaticResource SettingsDT}"/>
 
         </Expander>
 
         <ScrollViewer
-            Visibility="{Binding SessionStarted, Converter={StaticResource BoolToVisConverter}}"   
+              
             VerticalScrollBarVisibility="Auto"
             Grid.Row="5" Grid.Column="1"
             Grid.ColumnSpan="4">

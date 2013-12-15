@@ -21,12 +21,6 @@ namespace TweetTracker.ViewModels
 
         private ObservableCollection<CaptureSubjectMapper> _subjects;
 
-        public SessionViewModel(CaptureSession session) : this()
-        {
-            this.Session = session;
-            Settings.CountIntervalChanged += Settings_CountIntervalChanged;
-        }
-
         public SessionViewModel()
         {
             this._models = new ObservableCollection<CaptureSubject>();
@@ -58,38 +52,10 @@ namespace TweetTracker.ViewModels
                 return this._session;
             }
 
-            set
+            private set
             {
-                if(this._session != null)
-                {
-                    this.Session.CountAtInterval.CollectionChanged -= this.CountAtInterval_CollectionChanged;
-                }
-
                 this._session = value;
-
-                this.Models.Clear();
-                this.DeltaCount.Clear();
-
-                if (this._session != null)
-                {
-
-                    this.Session.Subjects.Values.ToList().ForEach(capSub => this.Models.Add(capSub));
-
-                    this.Session.CountAtInterval.CollectionChanged += CountAtInterval_CollectionChanged;
-
-                    Settings.CountIntervalChanged += this.Settings_CountIntervalChanged;
-
-                    this.Subjects.Clear();
-
-                    foreach(var subject in this.Session.Subjects)
-                    {
-                        this.Subjects.Add(new CaptureSubjectMapper(subject.Value));
-                    }
-                }
-
                 this.OnPropertyChanged("Session");
-                this.OnPropertyChanged("Subjects");
-                this.OnPropertyChanged("ModelsHeight");
             }
         }
 
@@ -143,6 +109,45 @@ namespace TweetTracker.ViewModels
                 this._models = value;
                 this.OnPropertyChanged("Models");
             }
+        }
+
+        public void StartCapture(CaptureSession session)
+        {
+            if (session == null)
+            {
+                throw new ArgumentNullException("session");
+            }
+
+            this.Session = session;
+
+            this.Models.Clear();
+            this.DeltaCount.Clear();
+            this.Subjects.Clear();
+            
+            this.Session.Subjects.Values.ToList().ForEach(capSub => this.Models.Add(capSub));
+
+            this.Session.CountAtInterval.CollectionChanged += CountAtInterval_CollectionChanged;
+            Settings.CountIntervalChanged += this.Settings_CountIntervalChanged;
+
+
+            foreach (var subject in this.Session.Subjects)
+            {
+                this.Subjects.Add(new CaptureSubjectMapper(subject.Value));
+            }
+
+            this.Session.StartCapture();
+
+
+            this.OnPropertyChanged("Session");
+            this.OnPropertyChanged("Subjects");
+            this.OnPropertyChanged("ModelsHeight");
+        }
+
+        public void StopCapture()
+        {
+            Settings.CountIntervalChanged -= this.Settings_CountIntervalChanged;
+            this.Session.CountAtInterval.CollectionChanged -= CountAtInterval_CollectionChanged;
+            this.Session.StopCapture();
         }
 
         /// <summary>

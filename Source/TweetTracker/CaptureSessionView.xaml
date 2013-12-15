@@ -44,7 +44,7 @@
             Width="700" Height="{Binding ModelsHeight}">
                 <vis:Chart.Series>
                     <vis:BarSeries Title="Tweets per category"
-                               ItemsSource="{Binding Models}"
+                               ItemsSource="{Binding Path=Session.Subjects.Values}"
                             IndependentValueBinding="{Binding Path=Key}"
                             DependentValueBinding="{Binding Path=AllStatusCount}">
                     </vis:BarSeries>

@@ -39,13 +39,6 @@ namespace TweetTracker.Model
             this._statusCountAtTime.Add(new KeyValuePair<int, int>((Settings.CountInterval / 1000) * this._statusCountAtTime.Count, (int)this.AllStatusCount));
         }
 
-        void Settings_CountIntervalChanged(object sender, EventArgs e)
-        {
-            this._timer.Stop();
-            this._timer.Interval = Settings.CountInterval;
-            this._timer.Start();
-        }
-
         public string Key
         {
             get
@@ -75,15 +68,31 @@ namespace TweetTracker.Model
 
         public void AddStatus(Status status)
         {
-            foreach(var keyword in this._keywords)
+            if (this._timer.Enabled)
             {
-                if (status.Text.ToUpperInvariant().Contains(keyword.ToUpperInvariant()))
+                foreach (var keyword in this._keywords)
                 {
-                    Console.WriteLine(string.Format(CultureInfo.InvariantCulture, "Added to {0}: '{1}'", this.Key, status.Text));
-                    this.AllStatusCount = this._allStatusCount + 1;
-                    break;
+                    if (status.Text.ToUpperInvariant().Contains(keyword.ToUpperInvariant()))
+                    {
+                        Console.WriteLine(string.Format(CultureInfo.InvariantCulture, "Added to {0}: '{1}'", this.Key, status.Text));
+                        this.AllStatusCount = this._allStatusCount + 1;
+                        break;
+                    }
                 }
             }
+        }
+
+        public void StopAccepting()
+        {
+            this._timer.Stop();
+            Settings.CountIntervalChanged -= this.Settings_CountIntervalChanged;
+        }
+
+        private void Settings_CountIntervalChanged(object sender, EventArgs e)
+        {
+            this._timer.Stop();
+            this._timer.Interval = Settings.CountInterval;
+            this._timer.Start();
         }
     }
 }
