@@ -51,7 +51,7 @@
                 </vis:Chart.Series>
             </vis:Chart>
 
-            <local:MultipleChart 
+            <!--<local:MultipleChart 
                  SeriesSource="{Binding Path=Session.Subjects.Values}" 
             Width="700" Height="400">
                 <local:MultipleChart.SeriesTemplate >
@@ -64,7 +64,23 @@
 			       DependentValueBinding="{Binding Value}" />
                     </DataTemplate>
                 </local:MultipleChart.SeriesTemplate>
+            </local:MultipleChart>-->
+
+            <local:MultipleChart 
+                 SeriesSource="{Binding Path=Subjects}" 
+            Width="700" Height="400">
+                <local:MultipleChart.SeriesTemplate >
+                    <DataTemplate >
+                        <vis:LineSeries
+			       			       			       Title="{Binding Key}"
+			       ItemsSource="{Binding DataPoints}"
+
+			       IndependentValueBinding="{Binding Key}"
+			       DependentValueBinding="{Binding Value}" />
+                    </DataTemplate>
+                </local:MultipleChart.SeriesTemplate>
             </local:MultipleChart>
+
 
             <vis:Chart
                 Width="700" Height="400">

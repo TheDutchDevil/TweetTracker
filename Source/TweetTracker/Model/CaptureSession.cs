@@ -104,6 +104,7 @@ namespace TweetTracker.Model
                     subject.Value.StopAccepting();
                 }
 
+                this._timer.Stop();
                 Settings.CountIntervalChanged -= this.Settings_CountIntervalChanged;
             }
         }
@@ -136,14 +137,13 @@ namespace TweetTracker.Model
 
             this._provider.StopListening();
 
-            Settings.Reset();
             this._countAtInterval.Clear();
 
             this._provider.SetSearchString(trackstringBuilder.ToString());
             this._provider.StartListening(this.HandleTweet);
+            Settings.Reset();
 
             this._startedAt = DateTime.Now;
-            this._timer.Stop();
             this._timer = new System.Timers.Timer(Settings.CountInterval);
             this._timer.Elapsed += (sender, e) => this._countAtInterval.Add(
                 new KeyValuePair<int, int>(this._countAtInterval.Max(kvp => kvp.Key) + Settings.CountInterval / 1000, this.AllTweetsCount));

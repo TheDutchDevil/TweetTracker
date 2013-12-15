@@ -122,18 +122,20 @@ namespace TweetTracker.ViewModels
 
             this.Models.Clear();
             this.DeltaCount.Clear();
-            this.Subjects.Clear();
             
             this.Session.Subjects.Values.ToList().ForEach(capSub => this.Models.Add(capSub));
 
             this.Session.CountAtInterval.CollectionChanged += CountAtInterval_CollectionChanged;
             Settings.CountIntervalChanged += this.Settings_CountIntervalChanged;
 
+            var newSubjects = new ObservableCollection<CaptureSubjectMapper>();
 
             foreach (var subject in this.Session.Subjects)
             {
-                this.Subjects.Add(new CaptureSubjectMapper(subject.Value));
+                newSubjects.Add(new CaptureSubjectMapper(subject.Value));
             }
+
+            this.Subjects = newSubjects;
 
             this.Session.StartCapture();
 
@@ -155,14 +157,7 @@ namespace TweetTracker.ViewModels
         /// CaptureSubject count intervals
         /// </summary>
         private void Settings_CountIntervalChanged(object sender, EventArgs e)
-        {
-            // TODO: Ensure the data is maintained in the model
-            
-            if(this.Session != null)
-            {
-                this.Session.Subjects.ToList().ForEach(kvp => kvp.Value.StatusCountAtTime.RemoveOneInTwoListItems());
-            }
-           
+        {           
                 this.DeltaCount.RemoveOneInTwoListItems();
         }
 
