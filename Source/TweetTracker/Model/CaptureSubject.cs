@@ -34,7 +34,6 @@ namespace TweetTracker.Model
                 Application.Current.Dispatcher.Invoke(new Action(() => this._statusCountAtTime.Add(new KeyValuePair<int,int>(this.StatusCountAtTime.Max(kvp => kvp.Key) + Settings.CountInterval / 1000, (int) this.AllStatusCount))));
             this._timer.Start();
 
-            Settings.CountIntervalChanged += Settings_CountIntervalChanged;
 
             this._statusCountAtTime.Add(new KeyValuePair<int, int>((Settings.CountInterval / 1000) * this._statusCountAtTime.Count, (int)this.AllStatusCount));
         }
@@ -85,7 +84,6 @@ namespace TweetTracker.Model
         public void StopAccepting()
         {
             this._timer.Stop();
-            Settings.CountIntervalChanged -= this.Settings_CountIntervalChanged;
         }
 
         private void Settings_CountIntervalChanged(object sender, EventArgs e)

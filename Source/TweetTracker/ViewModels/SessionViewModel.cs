@@ -21,6 +21,8 @@ namespace TweetTracker.ViewModels
 
         private ObservableCollection<CaptureSubjectMapper> _subjects;
 
+        private int _dataUpdatesDiscarded;
+
         public SessionViewModel()
         {
             this._models = new ObservableCollection<CaptureSubject>();
@@ -75,8 +77,13 @@ namespace TweetTracker.ViewModels
                     int oldCount = this.Session.CountAtInterval[indexOf - 1].Value;
 
                     var deltaCount = ((KeyValuePair<int, int>)newItem).Value - oldCount;
-                    
-                    Application.Current.Dispatcher.BeginInvoke(new Action(() => this.DeltaCount.Add(new KeyValuePair<DateTime, int>(DateTime.Now, deltaCount))));                    
+
+                    this._dataUpdatesDiscarded++;
+                    if (this._dataUpdatesDiscarded % Settings.AcceptThreshold == 0)
+                    {
+                        Application.Current.Dispatcher.BeginInvoke(new Action(() => this.DeltaCount.Add(new KeyValuePair<DateTime, int>(DateTime.Now, deltaCount))));
+                        this._dataUpdatesDiscarded = 0;
+                    }
                 }
             }
 
@@ -124,9 +131,10 @@ namespace TweetTracker.ViewModels
             this.DeltaCount.Clear();
             
             this.Session.Subjects.Values.ToList().ForEach(capSub => this.Models.Add(capSub));
+            this._dataUpdatesDiscarded = 0;
 
             this.Session.CountAtInterval.CollectionChanged += CountAtInterval_CollectionChanged;
-            Settings.CountIntervalChanged += this.Settings_CountIntervalChanged;
+            Settings.DataPointsPassedMax += (sender, e) => this.DeltaCount.RemoveOneInTwoListItems();
 
             var newSubjects = new ObservableCollection<CaptureSubjectMapper>();
 
@@ -147,7 +155,6 @@ namespace TweetTracker.ViewModels
 
         public void StopCapture()
         {
-            Settings.CountIntervalChanged -= this.Settings_CountIntervalChanged;
             this.Session.CountAtInterval.CollectionChanged -= CountAtInterval_CollectionChanged;
             this.Session.StopCapture();
         }

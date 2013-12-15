@@ -11,33 +11,65 @@ namespace TweetTracker
     {
         private readonly static Timer _timer;
 
+        private static int _maximumDataPoints;
+
+        private static int _dataCount;
+
+        private static int _threshold;
+
+        private static int _dataCountTimer;
+
         static Settings()
         {
             _timer = new Timer();
-            _timer.Elapsed += (sender, e) =>
-            {
-                CountInterval *= 2;
-                _timer.Interval = CountInterval * CountIntervalIncrementer;
-                if(CountIntervalChanged != null)
-                {
-                    CountIntervalChanged(new object(), new EventArgs());
-                }
-            };
+            _timer.Elapsed += _timer_Elapsed;
             Reset();
+
+            _maximumDataPoints = 10;
         }
 
-        public static int CountIntervalIncrementer { get; set; }
+        static void _timer_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            _dataCountTimer++;
+            if (_dataCountTimer % _threshold == 0)
+            {
+                _dataCount++;
+                _dataCountTimer = 0;
+            }
+
+            if (_dataCount == _maximumDataPoints)
+            {
+                _dataCount = _dataCount / 2;
+                _threshold *= 2;
+
+                if (DataPointsPassedMax != null)
+                {
+                    DataPointsPassedMax(new object(), new EventArgs());
+                }
+
+            }
+        }
 
         public static int CountInterval { get; set; }
 
-        public static event EventHandler CountIntervalChanged;
+        public static int AcceptThreshold
+        {
+            get
+            {
+                return _threshold;
+            }
+        }
+
+        public static event EventHandler DataPointsPassedMax;
 
         public static void Reset()
         {
             CountInterval = 2500;
-            CountIntervalIncrementer = 5;
+            _dataCount = 0;
+            _threshold = 1;
+            _dataCountTimer = 0;
             _timer.Stop();
-            _timer.Interval = CountInterval * CountIntervalIncrementer;
+            _timer.Interval = CountInterval;
             _timer.Start();
         }
     }

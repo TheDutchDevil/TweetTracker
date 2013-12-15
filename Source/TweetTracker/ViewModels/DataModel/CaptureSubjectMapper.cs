@@ -12,11 +12,14 @@ namespace TweetTracker.ViewModels.DataModel
     {
         private CaptureSubject _subject;
 
+        private int _updatesDiscared;
+
         public CaptureSubjectMapper(CaptureSubject subject)
         {
             this.DataPoints = new ObservableCollection<KeyValuePair<DateTime, int>>();
+            this._updatesDiscared = 0;
             subject.StatusCountAtTime.CollectionChanged += StatusCountAtTime_CollectionChanged;
-            Settings.CountIntervalChanged += (sender, e) => this.DataPoints.RemoveOneInTwoListItems();
+            Settings.DataPointsPassedMax += (sender, e) => this.DataPoints.RemoveOneInTwoListItems();
             this.DataPoints.Add(new KeyValuePair<DateTime, int>(DateTime.Now, 0));
             this.Subject = subject;
         }
@@ -27,7 +30,12 @@ namespace TweetTracker.ViewModels.DataModel
             {
                 foreach (var newItem in e.NewItems)
                 {
-                    DataPoints.Add(new KeyValuePair<DateTime, int>(DateTime.Now, ((KeyValuePair<int, int>)newItem).Value));
+                    this._updatesDiscared++;
+                    if (this._updatesDiscared % Settings.AcceptThreshold == 0)
+                    {
+                        DataPoints.Add(new KeyValuePair<DateTime, int>(DateTime.Now, ((KeyValuePair<int, int>)newItem).Value));
+                        this._updatesDiscared = 0;
+                    }
                 }
             }
         }

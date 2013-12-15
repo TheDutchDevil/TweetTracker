@@ -105,7 +105,6 @@ namespace TweetTracker.Model
                 }
 
                 this._timer.Stop();
-                Settings.CountIntervalChanged -= this.Settings_CountIntervalChanged;
             }
         }
 
@@ -150,7 +149,6 @@ namespace TweetTracker.Model
             this._countAtInterval.Add(
                 new KeyValuePair<int, int>(this._countAtInterval.Count * Settings.CountInterval, 0));
             this._timer.Start();
-            Settings.CountIntervalChanged +=  Settings_CountIntervalChanged;
         }
 
         private void Settings_CountIntervalChanged(object sender, EventArgs e)
