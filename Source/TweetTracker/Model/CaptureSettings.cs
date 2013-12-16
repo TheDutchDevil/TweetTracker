@@ -9,10 +9,13 @@ namespace TweetTracker.Model
 {
     class CaptureSettings
     {
+        private Settings _settings;
+
         private CaptureSettings()
         {
             this.HashTag = string.Empty;
             this.CompareKeys = new Dictionary<string, List<string>>();
+            this._settings = new Settings(50, 2500);
         }
 
         public CaptureSettings(CaptureSettingsViewModel model) : this()
@@ -38,6 +41,26 @@ namespace TweetTracker.Model
                 var keywords = row.Values.Split(';').ToList();
 
                 this.CompareKeys.Add(row.Key, keywords);
+            }
+        }
+
+        public CaptureSettings(string hashtag, Dictionary<string, string> values, Settings settings) : this()
+        {
+            this.HashTag = hashtag;
+
+            foreach(var kvp in values)
+            {
+                this.CompareKeys.Add(kvp.Key, kvp.Value.Split(';').ToList());
+            }
+
+            this._settings = settings;
+        }
+
+        public Settings Settings
+        {
+            get
+            {
+                return this._settings;
             }
         }
 

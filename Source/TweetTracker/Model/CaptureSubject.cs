@@ -24,18 +24,21 @@ namespace TweetTracker.Model
 
         private Timer _timer;
 
-        public CaptureSubject(string key, List<string> keywords)
+        private Settings _settings;
+
+        public CaptureSubject(string key, List<string> keywords, Settings settings)
         {
+            this._settings = settings;
             this._keywords = keywords;
             this._key = key;
             this._statusCountAtTime = new ObservableCollection<KeyValuePair<int, int>>();
-            this._timer = new Timer(Settings.CountInterval);
+            this._timer = new Timer(settings.CountInterval);
             this._timer.Elapsed += (sender, e) => 
-                Application.Current.Dispatcher.Invoke(new Action(() => this._statusCountAtTime.Add(new KeyValuePair<int,int>(this.StatusCountAtTime.Max(kvp => kvp.Key) + Settings.CountInterval / 1000, (int) this.AllStatusCount))));
+                Application.Current.Dispatcher.Invoke(new Action(() => this._statusCountAtTime.Add(new KeyValuePair<int,int>(this.StatusCountAtTime.Max(kvp => kvp.Key) + this._settings.CountInterval / 1000, (int) this.AllStatusCount))));
             this._timer.Start();
 
 
-            this._statusCountAtTime.Add(new KeyValuePair<int, int>((Settings.CountInterval / 1000) * this._statusCountAtTime.Count, (int)this.AllStatusCount));
+            this._statusCountAtTime.Add(new KeyValuePair<int, int>((settings.CountInterval / 1000) * this._statusCountAtTime.Count, (int)this.AllStatusCount));
         }
 
         public string Key
@@ -89,7 +92,7 @@ namespace TweetTracker.Model
         private void Settings_CountIntervalChanged(object sender, EventArgs e)
         {
             this._timer.Stop();
-            this._timer.Interval = Settings.CountInterval;
+            this._timer.Interval = this._settings.CountInterval;
             this._timer.Start();
         }
     }

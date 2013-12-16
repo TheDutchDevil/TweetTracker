@@ -38,17 +38,24 @@ namespace TweetTracker.Model
         {
             // TODO: Inject a tweet serivce here
 
-            this._provider = new TwitterServiceProvider();
-            this._timer = new System.Timers.Timer(Settings.CountInterval);
-
             this._settings = settings;
+            this._provider = new TwitterServiceProvider();
+            this._timer = new System.Timers.Timer(this._settings.Settings.CountInterval);
             this._countAtInterval = new ObservableCollection<KeyValuePair<int, int>>();
 
             this._captureSubjects = new Dictionary<string, CaptureSubject>();
 
             foreach(var subjectKey in this._settings.CompareKeys.Keys)
             {
-                this._captureSubjects.Add(subjectKey, new CaptureSubject(subjectKey, this._settings.CompareKeys[subjectKey]));
+                this._captureSubjects.Add(subjectKey, new CaptureSubject(subjectKey, this._settings.CompareKeys[subjectKey], this.Settings.Settings));
+            }
+        }
+
+        public CaptureSettings Settings
+        {
+            get
+            {
+                return this._settings;
             }
         }
 
@@ -140,21 +147,20 @@ namespace TweetTracker.Model
 
             this._provider.SetSearchString(trackstringBuilder.ToString());
             this._provider.StartListening(this.HandleTweet);
-            Settings.Reset();
 
             this._startedAt = DateTime.Now;
-            this._timer = new System.Timers.Timer(Settings.CountInterval);
+            this._timer = new System.Timers.Timer(this._settings.Settings.CountInterval);
             this._timer.Elapsed += (sender, e) => this._countAtInterval.Add(
-                new KeyValuePair<int, int>(this._countAtInterval.Max(kvp => kvp.Key) + Settings.CountInterval / 1000, this.AllTweetsCount));
+                new KeyValuePair<int, int>(this._countAtInterval.Max(kvp => kvp.Key) + this._settings.Settings.CountInterval / 1000, this.AllTweetsCount));
             this._countAtInterval.Add(
-                new KeyValuePair<int, int>(this._countAtInterval.Count * Settings.CountInterval, 0));
+                new KeyValuePair<int, int>(this._countAtInterval.Count * this._settings.Settings.CountInterval, 0));
             this._timer.Start();
         }
 
         private void Settings_CountIntervalChanged(object sender, EventArgs e)
         {
             _timer.Stop();
-            _timer.Interval = Settings.CountInterval;
+            _timer.Interval = this._settings.Settings.CountInterval;
             _timer.Start();
         }
 

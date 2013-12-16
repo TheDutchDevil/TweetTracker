@@ -7,70 +7,58 @@ using System.Timers;
 
 namespace TweetTracker
 {
-    public static class Settings
+    public class Settings
     {
-        private readonly static Timer _timer;
+        private int _maxDataPoints;
+        private int _dataPoints;
+        private int _recordDataInterval;
+        private int _countTimerTickThreshold;
+        private int _timerTicksIgnored;
 
-        private static int _maximumDataPoints;
+        private Timer _timer;
 
-        private static int _dataCount;
-
-        private static int _threshold;
-
-        private static int _dataCountTimer;
-
-        static Settings()
+        public Settings(int maxDataPoints, int interval)
         {
-            _timer = new Timer();
-            _timer.Elapsed += _timer_Elapsed;
-            Reset();
+            this._maxDataPoints = maxDataPoints;
+            this._recordDataInterval = interval;
+            this._countTimerTickThreshold = 1;
 
-            _maximumDataPoints = 10;
+            this._timer = new Timer(this._recordDataInterval);
+            this._timer.Elapsed +=_timer_Elapsed;
         }
 
-        static void _timer_Elapsed(object sender, ElapsedEventArgs e)
+        public event EventHandler MaxDataPointsPassed;
+
+        public int IgnoreDataUpdateThreshold
         {
-            _dataCountTimer++;
-            if (_dataCountTimer % _threshold == 0)
+            get { return this._countTimerTickThreshold; }
+        }
+
+        public int CountInterval
+        {
+            get { return this._recordDataInterval; }
+        }
+
+        private void _timer_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            this._timerTicksIgnored++;
+            if (this._timerTicksIgnored % this._countTimerTickThreshold == 0)
             {
-                _dataCount++;
-                _dataCountTimer = 0;
+                this._dataPoints++;
+                this._timerTicksIgnored = 0;
             }
 
-            if (_dataCount == _maximumDataPoints)
+            if (this._dataPoints == this._maxDataPoints)
             {
-                _dataCount = _dataCount / 2;
-                _threshold *= 2;
+                this._dataPoints = this._dataPoints / 2;
+                this._countTimerTickThreshold *= 2;
 
-                if (DataPointsPassedMax != null)
+                if (MaxDataPointsPassed != null)
                 {
-                    DataPointsPassedMax(new object(), new EventArgs());
+                    MaxDataPointsPassed(this, new EventArgs());
                 }
 
             }
-        }
-
-        public static int CountInterval { get; set; }
-
-        public static int AcceptThreshold
-        {
-            get
-            {
-                return _threshold;
-            }
-        }
-
-        public static event EventHandler DataPointsPassedMax;
-
-        public static void Reset()
-        {
-            CountInterval = 2500;
-            _dataCount = 0;
-            _threshold = 1;
-            _dataCountTimer = 0;
-            _timer.Stop();
-            _timer.Interval = CountInterval;
-            _timer.Start();
         }
     }
 }
