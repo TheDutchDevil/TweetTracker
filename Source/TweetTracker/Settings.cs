@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,6 +16,8 @@ namespace TweetTracker
         private int _countTimerTickThreshold;
         private int _timerTicksIgnored;
 
+        private bool _started;
+
         private Timer _timer;
 
         public Settings(int maxDataPoints, int interval)
@@ -22,6 +25,7 @@ namespace TweetTracker
             this._maxDataPoints = maxDataPoints;
             this._recordDataInterval = interval;
             this._countTimerTickThreshold = 1;
+            this._started = false;
 
             this._timer = new Timer(this._recordDataInterval);
             this._timer.Elapsed +=_timer_Elapsed;
@@ -39,6 +43,33 @@ namespace TweetTracker
             get { return this._recordDataInterval; }
         }
 
+        public bool Started
+        {
+            get
+            {
+                return this._timer.Enabled;
+            }
+        }
+
+        public void StartCounting()
+        {
+            if(this._started)
+            {
+                throw new InvalidOperationException("Session has already been started");
+            }
+            this._timer.Start();
+            this._started = true;
+        }
+
+        public void StopCounting()
+        {
+            if(!this._started)
+            {
+                throw new InvalidOperationException("Counter cannot be stopped if it has not been started");
+            }
+            this._timer.Stop();
+        }
+
         private void _timer_Elapsed(object sender, ElapsedEventArgs e)
         {
             this._timerTicksIgnored++;
@@ -46,7 +77,7 @@ namespace TweetTracker
             {
                 this._dataPoints++;
                 this._timerTicksIgnored = 0;
-            }
+                }
 
             if (this._dataPoints == this._maxDataPoints)
             {

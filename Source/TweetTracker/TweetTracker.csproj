@@ -74,6 +74,7 @@
       <DependentUpon>CaptureSettingsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\MultiChartControl.cs" />
+    <Compile Include="DependencyInjection\ServiceProvider.cs" />
     <Compile Include="ExtensionUtil.cs" />
     <Compile Include="Model\CaptureSession.cs" />
     <Compile Include="Model\CaptureSettings.cs" />

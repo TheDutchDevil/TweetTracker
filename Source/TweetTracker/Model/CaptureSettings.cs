@@ -62,6 +62,11 @@ namespace TweetTracker.Model
             {
                 return this._settings;
             }
+
+            set
+            {
+                this._settings = value;
+            }
         }
 
         public Dictionary<string, List<string>> CompareKeys

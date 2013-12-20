@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using TweetTracker.DependencyInjection;
 using TweetTracker.Model.InformationProviders;
 using TweetTracker.Properties;
 using TweetTracker.ViewModels;
@@ -22,7 +23,7 @@ namespace TweetTracker.Model
 
         private CaptureSettings _settings;
 
-        private Dictionary<string, CaptureSubject> _captureSubjects;
+        private ObservableCollection<CaptureSubject> _captureSubjects;
 
         private bool _isRunning = false;
 
@@ -36,18 +37,16 @@ namespace TweetTracker.Model
 
         public CaptureSession(CaptureSettings settings)
         {
-            // TODO: Inject a tweet serivce here
-
             this._settings = settings;
-            this._provider = new TwitterServiceProvider();
+            this._provider = ServiceProvider.TwitterProvider;
             this._timer = new System.Timers.Timer(this._settings.Settings.CountInterval);
             this._countAtInterval = new ObservableCollection<KeyValuePair<int, int>>();
 
-            this._captureSubjects = new Dictionary<string, CaptureSubject>();
+            this._captureSubjects = new ObservableCollection<CaptureSubject>();
 
             foreach(var subjectKey in this._settings.CompareKeys.Keys)
             {
-                this._captureSubjects.Add(subjectKey, new CaptureSubject(subjectKey, this._settings.CompareKeys[subjectKey], this.Settings.Settings));
+                this._captureSubjects.Add(new CaptureSubject(subjectKey, this._settings.CompareKeys[subjectKey], this.Settings.Settings));
             }
         }
 
@@ -59,7 +58,7 @@ namespace TweetTracker.Model
             }
         }
 
-        public Dictionary<string, CaptureSubject> Subjects
+        public ObservableCollection<CaptureSubject> Subjects
         {
             get
             {
@@ -89,15 +88,30 @@ namespace TweetTracker.Model
             }
         }
 
+        public void StartCaptureNonBlocking()
+        {
+            var thread = this.GetStartThread();
+            thread.Start();
+            this._isRunning = true;
+        }
+
         public void StartCapture()
         {
-         
-            if(!this._isRunning)
+            var thread = this.GetStartThread();
+            thread.Start();
+            this._isRunning = true;
+            thread.Join();
+        }
+
+        private Thread GetStartThread()
+        {
+            if (this._isRunning)
             {
-                var thread = new Thread(this.Update);
-                this._isRunning = true;
-                thread.Start();
+                throw new InvalidOperationException("Cannot start a session that has already been started");
             }
+
+            var thread = new Thread(this.AppendToAllTweets);
+            return thread;
         }
 
         public void StopCapture()
@@ -108,29 +122,70 @@ namespace TweetTracker.Model
                 
                 foreach(var subject in this._captureSubjects)
                 {
-                    subject.Value.StopAccepting();
+                    subject.StopAccepting();
                 }
 
                 this._timer.Stop();
+                this._settings.Settings.StopCounting();
             }
         }
 
-        private void Update()
+        public void UpdateCaptureSettings(CaptureSettings settings)
         {
-            this.AppendToAllTweets();
+            settings.Settings = this._settings.Settings;
+
+            List<Dictionary<string, List<string>>> settingsFound = new List<Dictionary<string, List<string>>>();
+
+            foreach(var settingsRow in settings.CompareKeys)
+            {
+                var subject = this._captureSubjects.Select(kvp => kvp.Key == settingsRow.Key).FirstOrDefault();
+                if(subject != null)
+                {
+
+                }
+                else
+                {
+                    this._captureSubjects.Add(new CaptureSubject(settingsRow.Key, settingsRow.Value, this._settings.Settings));
+                }
+            }
+
+
+            var searchString = this.MakeSearchString();
+            this._provider.SetSearchString(searchString);
         }
 
         private void AppendToAllTweets()
         {
+            var searchString = this.MakeSearchString();
+
+            this._provider.StopListening();
+
+            this._countAtInterval.Clear();
+
+            this._provider.SetSearchString(searchString);
+            this._provider.StartListening(this.HandleTweet);
+            this._settings.Settings.StartCounting();
+
+            this._startedAt = DateTime.Now;
+            this._timer = new System.Timers.Timer(this._settings.Settings.CountInterval);
+            this._timer.Elapsed += (sender, e) => this._countAtInterval.Add(
+                new KeyValuePair<int, int>(this._countAtInterval.Max(kvp => kvp.Key) + this._settings.Settings.CountInterval / 1000, this.AllTweetsCount));
+            this._countAtInterval.Add(
+                new KeyValuePair<int, int>(this._countAtInterval.Count * this._settings.Settings.CountInterval, 0));
+            this._timer.Start();
+        }
+
+        private string MakeSearchString()
+        {
             var trackstringBuilder = new StringBuilder();
 
-            if(string.IsNullOrEmpty(this._settings.HashTag))
+            if (string.IsNullOrEmpty(this._settings.HashTag))
             {
-                foreach(var keywords in this._settings.CompareKeys.Values)
+                foreach (var keywords in this._settings.CompareKeys.Values)
                 {
-                    foreach(var keyword in keywords)
+                    foreach (var keyword in keywords)
                     {
-                        trackstringBuilder.Append(string.Format(CultureInfo.InvariantCulture,"{0},", keyword));
+                        trackstringBuilder.Append(string.Format(CultureInfo.InvariantCulture, "{0},", keyword));
                     }
                 }
 
@@ -141,20 +196,7 @@ namespace TweetTracker.Model
                 trackstringBuilder.Append(this._settings.HashTag.Replace("#", string.Empty));
             }
 
-            this._provider.StopListening();
-
-            this._countAtInterval.Clear();
-
-            this._provider.SetSearchString(trackstringBuilder.ToString());
-            this._provider.StartListening(this.HandleTweet);
-
-            this._startedAt = DateTime.Now;
-            this._timer = new System.Timers.Timer(this._settings.Settings.CountInterval);
-            this._timer.Elapsed += (sender, e) => this._countAtInterval.Add(
-                new KeyValuePair<int, int>(this._countAtInterval.Max(kvp => kvp.Key) + this._settings.Settings.CountInterval / 1000, this.AllTweetsCount));
-            this._countAtInterval.Add(
-                new KeyValuePair<int, int>(this._countAtInterval.Count * this._settings.Settings.CountInterval, 0));
-            this._timer.Start();
+            return trackstringBuilder.ToString();
         }
 
         private void Settings_CountIntervalChanged(object sender, EventArgs e)
@@ -183,9 +225,9 @@ namespace TweetTracker.Model
 
             if (status.Text.Contains(this._settings.HashTag.Replace("#", string.Empty)))
             {
-                foreach (var key in this._captureSubjects.Keys)
+                foreach (var subject in this._captureSubjects)
                 {
-                    this._captureSubjects[key].AddStatus(status);
+                    subject.AddStatus(status);
                 }
             }
 

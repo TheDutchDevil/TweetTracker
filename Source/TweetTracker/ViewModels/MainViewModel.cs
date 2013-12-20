@@ -17,6 +17,7 @@ namespace TweetTracker.ViewModels
             this.Settings = new CaptureSettingsViewModel();
             this.StartCommand = new RelayCommand(this.PrepareForCapture);
             this.StopCommand = new RelayCommand(this.StopCapture);
+            this.UpdateCommand = new RelayCommand(this.UpdateSession);
             this.Session = new SessionViewModel();
         }
 
@@ -30,6 +31,12 @@ namespace TweetTracker.ViewModels
         }
 
         public RelayCommand StopCommand
+        {
+            get;
+            private set;
+        }
+
+        public RelayCommand UpdateCommand
         {
             get;
             private set;
@@ -57,6 +64,11 @@ namespace TweetTracker.ViewModels
             {
                 return !this.SessionStarted;
             }
+        }
+
+        private void UpdateSession()
+        {
+
         }
 
         private void PrepareForCapture()

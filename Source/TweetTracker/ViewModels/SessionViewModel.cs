@@ -118,6 +118,12 @@ namespace TweetTracker.ViewModels
             }
         }
 
+        public void UpdateCaptureSettings(CaptureSettingsViewModel settingsModel)
+        {
+            var settings = new CaptureSettings(settingsModel);
+
+        }
+
         public void StartCapture(CaptureSession session)
         {
             if (session == null)
@@ -130,7 +136,7 @@ namespace TweetTracker.ViewModels
             this.Models.Clear();
             this.DeltaCount.Clear();
             
-            this.Session.Subjects.Values.ToList().ForEach(capSub => this.Models.Add(capSub));
+            this.Session.Subjects.ToList().ForEach(capSub => this.Models.Add(capSub));
             this._dataUpdatesDiscarded = 0;
 
             this.Session.CountAtInterval.CollectionChanged += CountAtInterval_CollectionChanged;
@@ -140,12 +146,12 @@ namespace TweetTracker.ViewModels
 
             foreach (var subject in this.Session.Subjects)
             {
-                newSubjects.Add(new CaptureSubjectMapper(subject.Value, this.Session.Settings.Settings));
+                newSubjects.Add(new CaptureSubjectMapper(subject, this.Session.Settings.Settings));
             }
 
             this.Subjects = newSubjects;
 
-            this.Session.StartCapture();
+            this.Session.StartCaptureNonBlocking();
 
 
             this.OnPropertyChanged("Session");
