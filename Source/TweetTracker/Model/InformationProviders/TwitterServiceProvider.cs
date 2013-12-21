@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using TweetTracker.Properties;
 
@@ -54,6 +55,9 @@ namespace TweetTracker.Model.InformationProviders
             if(this._isRunning)
             {
                 this.StopListening();
+
+                Thread.Sleep(100);
+
                 this.StartRunning();
             }
         }

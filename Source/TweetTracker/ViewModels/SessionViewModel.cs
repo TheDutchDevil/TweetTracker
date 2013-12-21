@@ -162,7 +162,7 @@ namespace TweetTracker.ViewModels
             this.OnPropertyChanged("ModelsHeight");
         }
 
-        void Subjects_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        private void Subjects_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             if(e.NewItems != null)
             {
