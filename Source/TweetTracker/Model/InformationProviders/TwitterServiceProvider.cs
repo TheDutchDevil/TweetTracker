@@ -1,7 +1,9 @@
 ﻿using LinqToTwitter;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using TweetTracker.Properties;
@@ -51,7 +53,8 @@ namespace TweetTracker.Model.InformationProviders
 
             if(this._isRunning)
             {
-
+                this.StopListening();
+                this.StartRunning();
             }
         }
 
@@ -88,11 +91,18 @@ namespace TweetTracker.Model.InformationProviders
 
         private void StartRunning()
         {
-            this._stream = (from stream in this._context.Streaming
-                                        where stream.Type == StreamingType.Filter &&
-                                        stream.Track == this._currentSearchString.ToString()
-                                        select stream).StreamingCallback((con) => this._listener(con)).SingleOrDefault();
-
+            try
+            {
+                this._stream = (from stream in this._context.Streaming
+                                where stream.Type == StreamingType.Filter &&
+                                stream.Track == this._currentSearchString.ToString()
+                                select stream).StreamingCallback((con) => this._listener(con)).SingleOrDefault();
+            }
+            catch(WebException ex)
+            {
+                Debug.WriteLine("Could not connect to the twitter API: '{0}'\n{1}", ex.Message, ex.StackTrace);
+                throw;
+            }
         }
     }
 }

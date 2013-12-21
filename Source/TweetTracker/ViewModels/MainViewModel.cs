@@ -68,7 +68,7 @@ namespace TweetTracker.ViewModels
 
         private void UpdateSession()
         {
-
+            this.Session.UpdateCaptureSettings(this.Settings);
         }
 
         private void PrepareForCapture()

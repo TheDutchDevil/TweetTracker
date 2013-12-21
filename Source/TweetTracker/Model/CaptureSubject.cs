@@ -68,6 +68,11 @@ namespace TweetTracker.Model
             }
         }
 
+        public void UpdateKeywords(List<string> keywords)
+        {
+            this._keywords = keywords;
+        }
+
         public void AddStatus(Status status)
         {
             if (this._timer.Enabled)

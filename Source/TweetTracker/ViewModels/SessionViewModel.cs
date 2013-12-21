@@ -121,7 +121,7 @@ namespace TweetTracker.ViewModels
         public void UpdateCaptureSettings(CaptureSettingsViewModel settingsModel)
         {
             var settings = new CaptureSettings(settingsModel);
-
+            this.Session.UpdateCaptureSettings(settings);
         }
 
         public void StartCapture(CaptureSession session)

@@ -134,19 +134,24 @@ namespace TweetTracker.Model
         {
             settings.Settings = this._settings.Settings;
 
-            List<Dictionary<string, List<string>>> settingsFound = new List<Dictionary<string, List<string>>>();
-
             foreach(var settingsRow in settings.CompareKeys)
             {
-                var subject = this._captureSubjects.Select(kvp => kvp.Key == settingsRow.Key).FirstOrDefault();
+                var subject = this._captureSubjects.Where(kvp => kvp.Key == settingsRow.Key).FirstOrDefault();
                 if(subject != null)
                 {
-
+                    subject.UpdateKeywords(settingsRow.Value);
                 }
                 else
                 {
                     this._captureSubjects.Add(new CaptureSubject(settingsRow.Key, settingsRow.Value, this._settings.Settings));
                 }
+            }
+
+            var subjectsNoLongerTracked = this._captureSubjects.Where(sub => !settings.CompareKeys.Keys.Contains(sub.Key));
+
+            foreach(var subject in subjectsNoLongerTracked)
+            {
+                subject.StopAccepting();
             }
 
 

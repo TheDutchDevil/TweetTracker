@@ -44,27 +44,12 @@
             Width="700" Height="{Binding ModelsHeight}">
                 <vis:Chart.Series>
                     <vis:BarSeries Title="Tweets per category"
-                               ItemsSource="{Binding Path=Session.Subjects.Values}"
+                               ItemsSource="{Binding Path=Session.Subjects}"
                             IndependentValueBinding="{Binding Path=Key}"
                             DependentValueBinding="{Binding Path=AllStatusCount}">
                     </vis:BarSeries>
                 </vis:Chart.Series>
             </vis:Chart>
-
-            <!--<local:MultipleChart 
-                 SeriesSource="{Binding Path=Session.Subjects.Values}" 
-            Width="700" Height="400">
-                <local:MultipleChart.SeriesTemplate >
-                    <DataTemplate >
-                        <vis:LineSeries
-			       			       			       Title="{Binding Key}"
-			       ItemsSource="{Binding StatusCountAtTime}"
-
-			       IndependentValueBinding="{Binding Key}"
-			       DependentValueBinding="{Binding Value}" />
-                    </DataTemplate>
-                </local:MultipleChart.SeriesTemplate>
-            </local:MultipleChart>-->
 
             <local:MultipleChart 
                  SeriesSource="{Binding Path=Subjects}" 
@@ -72,11 +57,11 @@
                 <local:MultipleChart.SeriesTemplate >
                     <DataTemplate >
                         <vis:LineSeries
-			       			       			       Title="{Binding Key}"
-			       ItemsSource="{Binding DataPoints}"
+                                                   Title="{Binding Key}"
+                   ItemsSource="{Binding DataPoints}"
 
-			       IndependentValueBinding="{Binding Key}"
-			       DependentValueBinding="{Binding Value}" />
+                   IndependentValueBinding="{Binding Key}"
+                   DependentValueBinding="{Binding Value}" />
                     </DataTemplate>
                 </local:MultipleChart.SeriesTemplate>
             </local:MultipleChart>
