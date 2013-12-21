@@ -154,6 +154,7 @@ namespace TweetTracker.Model
                 subject.StopAccepting();
             }
 
+            this._settings = settings;
 
             var searchString = this.MakeSearchString();
             this._provider.SetSearchString(searchString);

@@ -23,7 +23,7 @@ namespace TweetTracker.Controls
             get { return (IEnumerable)GetValue(SeriesSourceProperty); }
             set { SetValue(SeriesSourceProperty, value); }
         }
-        public static readonly DependencyProperty SeriesSourceProperty = DependencyProperty.Register("SeriesSource", typeof(IEnumerable), typeof(MultipleChart), new PropertyMetadata(default(IEnumerable), new PropertyChangedCallback(OnSeriesSourceChanged)));
+        public static readonly DependencyProperty SeriesSourceProperty = DependencyProperty.Register("SeriesSource", typeof(IEnumerable), typeof(MultipleChart), new PropertyMetadata(default(IEnumerable), MultipleChart.OnSeriesSourceChanged));
 
         private static void OnSeriesSourceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -151,6 +152,8 @@ namespace TweetTracker.ViewModels
 
             this.Subjects = newSubjects;
 
+            this.Session.Subjects.CollectionChanged += Subjects_CollectionChanged;
+
             this.Session.StartCaptureNonBlocking();
 
 
@@ -159,8 +162,24 @@ namespace TweetTracker.ViewModels
             this.OnPropertyChanged("ModelsHeight");
         }
 
+        void Subjects_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if(e.NewItems != null)
+            {
+                var newSubjects = new ObservableCollection<CaptureSubjectMapper>(this.Subjects);
+
+                foreach(var subject in e.NewItems)
+                {
+                    newSubjects.Add(new CaptureSubjectMapper(subject as CaptureSubject, this.Session.Settings.Settings));
+                }
+
+                this.Subjects = newSubjects;
+            }
+        }
+
         public void StopCapture()
         {
+            this.Session.Subjects.CollectionChanged -= this.Subjects_CollectionChanged;
             this.Session.CountAtInterval.CollectionChanged -= CountAtInterval_CollectionChanged;
             this.Session.StopCapture();
         }
