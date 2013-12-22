@@ -25,7 +25,7 @@ namespace TweetTests
 
             var session = new CaptureSession(capSetts);
 
-            var model = new SessionViewModel();
+            var model = new StaticSessionViewModel();
 
             model.StartCapture(session);
 

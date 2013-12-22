@@ -12,21 +12,22 @@ using TweetTracker.ViewModels.DataModel;
 
 namespace TweetTracker.ViewModels
 {
-    class SessionViewModel : BaseViewModel
+    /// <summary>
+    /// ViewModel used to display long term information for one capture
+    /// session
+    /// </summary>
+    class StaticSessionViewModel : BaseViewModel
     {
         private CaptureSession _session;
-
-        private ObservableCollection<CaptureSubject> _models;
-
+        
         private ObservableCollection<KeyValuePair<DateTime, int>> _deltaCount;
 
         private ObservableCollection<CaptureSubjectMapper> _subjects;
 
         private int _dataUpdatesDiscarded;
 
-        public SessionViewModel()
+        public StaticSessionViewModel()
         {
-            this._models = new ObservableCollection<CaptureSubject>();
             this._deltaCount = new ObservableCollection<KeyValuePair<DateTime, int>>();
             this.Subjects = new ObservableCollection<CaptureSubjectMapper>();
             this.Session = null;
@@ -36,7 +37,7 @@ namespace TweetTracker.ViewModels
         {
             get
             {
-                return 200 + this.Models.Count * 35;
+                return 200 + this.Session.Subjects.Count * 35;
             }
         }
 
@@ -88,8 +89,7 @@ namespace TweetTracker.ViewModels
                 }
             }
 
-            this.Models = new ObservableCollection<CaptureSubject>(this.Models.OrderBy(cpSub => cpSub.AllStatusCount));
-        }
+            }
 
         public ObservableCollection<CaptureSubjectMapper> Subjects
         {
@@ -102,20 +102,6 @@ namespace TweetTracker.ViewModels
             {
                 this._subjects = value;
                 this.OnPropertyChanged("Subjects");
-            }
-        }
-
-        public ObservableCollection<CaptureSubject> Models
-        {
-            get
-            {
-                return this._models;
-            }
-
-            set
-            {
-                this._models = value;
-                this.OnPropertyChanged("Models");
             }
         }
 
@@ -134,10 +120,8 @@ namespace TweetTracker.ViewModels
 
             this.Session = session;
 
-            this.Models.Clear();
             this.DeltaCount.Clear();
-            
-            this.Session.Subjects.ToList().ForEach(capSub => this.Models.Add(capSub));
+
             this._dataUpdatesDiscarded = 0;
 
             this.Session.CountAtInterval.CollectionChanged += CountAtInterval_CollectionChanged;
@@ -164,11 +148,11 @@ namespace TweetTracker.ViewModels
 
         private void Subjects_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            if(e.NewItems != null)
+            if (e.NewItems != null)
             {
                 var newSubjects = new ObservableCollection<CaptureSubjectMapper>(this.Subjects);
 
-                foreach(var subject in e.NewItems)
+                foreach (var subject in e.NewItems)
                 {
                     newSubjects.Add(new CaptureSubjectMapper(subject as CaptureSubject, this.Session.Settings.Settings));
                 }
@@ -189,9 +173,8 @@ namespace TweetTracker.ViewModels
         /// CaptureSubject count intervals
         /// </summary>
         private void Settings_CountIntervalChanged(object sender, EventArgs e)
-        {           
-                this.DeltaCount.RemoveOneInTwoListItems();
+        {
+            this.DeltaCount.RemoveOneInTwoListItems();
         }
-
     }
 }

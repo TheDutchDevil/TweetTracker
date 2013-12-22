@@ -6,6 +6,7 @@
              xmlns:sparrow="http://sparrowtoolkit.codeplex.com/wpf"
              xmlns:vms="clr-namespace:TweetTracker.ViewModels"
              xmlns:local="clr-namespace:TweetTracker.Controls"
+             xmlns:converters="clr-namespace:TweetTracker.Converters"
              xmlns:vis="clr-namespace:System.Windows.Controls.DataVisualization.Charting;assembly=System.Windows.Controls.DataVisualization.Toolkit"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
@@ -13,6 +14,15 @@
         <Style x:Key="HeaderStyle" TargetType="TextBlock">
             <Setter Property="FontSize" Value="20"/>
         </Style>
+
+        <converters:RandomColorProvider x:Key="ColorProvider"/>
+
+        <Style x:Key="DataPointStyle" TargetType="{x:Type vis:LineDataPoint}">
+            <Setter Property="Width" Value="0" />
+            <Setter Property="Background" Value="{Binding Converter={StaticResource ColorProvider}}"/>
+        </Style>
+      
+
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -56,7 +66,8 @@
             Width="700" Height="400">
                 <local:MultipleChart.SeriesTemplate >
                     <DataTemplate >
-                        <vis:LineSeries  
+                        <vis:LineSeries
+                            DataPointStyle="{StaticResource DataPointStyle}"
                             Title="{Binding Key}"
                             ItemsSource="{Binding DataPoints}"
                             IndependentValueBinding="{Binding Key}"

@@ -10,7 +10,7 @@ namespace TweetTracker.ViewModels
     class MainViewModel : BaseViewModel
     {
 
-        private SessionViewModel _session;
+        private StaticSessionViewModel _session;
 
         public MainViewModel()
         {
@@ -18,7 +18,7 @@ namespace TweetTracker.ViewModels
             this.StartCommand = new RelayCommand(this.PrepareForCapture);
             this.StopCommand = new RelayCommand(this.StopCapture);
             this.UpdateCommand = new RelayCommand(this.UpdateSession);
-            this.Session = new SessionViewModel();
+            this.Session = new StaticSessionViewModel();
         }
 
 
@@ -42,7 +42,7 @@ namespace TweetTracker.ViewModels
             private set;
         }
 
-        public SessionViewModel Session
+        public StaticSessionViewModel Session
         {
             get
             {

@@ -75,6 +75,7 @@
       <DependentUpon>CaptureSettingsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\MultiChartControl.cs" />
+    <Compile Include="Converters\RandomColorProvider.cs" />
     <Compile Include="DependencyInjection\ServiceProvider.cs" />
     <Compile Include="ExtensionUtil.cs" />
     <Compile Include="Model\CaptureSession.cs" />
@@ -90,7 +91,7 @@
     <Compile Include="ViewModels\DataModel\CaptureSubjectMapper.cs" />
     <Compile Include="ViewModels\EditableSettingsRowViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
-    <Compile Include="ViewModels\SessionViewModel.cs" />
+    <Compile Include="ViewModels\StaticSessionViewModel.cs" />
     <Page Include="CaptureSessionView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
