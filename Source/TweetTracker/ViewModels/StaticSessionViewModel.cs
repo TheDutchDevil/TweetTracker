@@ -16,7 +16,7 @@ namespace TweetTracker.ViewModels
     /// ViewModel used to display long term information for one capture
     /// session
     /// </summary>
-    class StaticSessionViewModel : BaseViewModel
+    class StaticSessionViewModel : CaptureSessionBase
     {
         private CaptureSession _session;
         
@@ -104,14 +104,8 @@ namespace TweetTracker.ViewModels
                 this.OnPropertyChanged("Subjects");
             }
         }
-
-        public void UpdateCaptureSettings(CaptureSettingsViewModel settingsModel)
-        {
-            var settings = new CaptureSettings(settingsModel);
-            this.Session.UpdateCaptureSettings(settings);
-        }
-
-        public void StartCapture(CaptureSession session)
+        
+        public override void StartListening(CaptureSession session)
         {
             if (session == null)
             {
@@ -120,13 +114,21 @@ namespace TweetTracker.ViewModels
 
             this.Session = session;
 
-            this.DeltaCount.Clear();
-
             this._dataUpdatesDiscarded = 0;
 
             this.Session.CountAtInterval.CollectionChanged += CountAtInterval_CollectionChanged;
             this.Session.Settings.Settings.MaxDataPointsPassed += (sender, e) => this.DeltaCount.RemoveOneInTwoListItems();
+            MakeSubjects();
 
+            this.Session.Subjects.CollectionChanged += Subjects_CollectionChanged;
+            
+            this.OnPropertyChanged("Session");
+            this.OnPropertyChanged("Subjects");
+            this.OnPropertyChanged("ModelsHeight");
+        }
+
+        private void MakeSubjects()
+        {
             var newSubjects = new ObservableCollection<CaptureSubjectMapper>();
 
             foreach (var subject in this.Session.Subjects)
@@ -135,15 +137,6 @@ namespace TweetTracker.ViewModels
             }
 
             this.Subjects = newSubjects;
-
-            this.Session.Subjects.CollectionChanged += Subjects_CollectionChanged;
-
-            this.Session.StartCaptureNonBlocking();
-
-
-            this.OnPropertyChanged("Session");
-            this.OnPropertyChanged("Subjects");
-            this.OnPropertyChanged("ModelsHeight");
         }
 
         private void Subjects_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -161,20 +154,10 @@ namespace TweetTracker.ViewModels
             }
         }
 
-        public void StopCapture()
+        public override void StopListening()
         {
             this.Session.Subjects.CollectionChanged -= this.Subjects_CollectionChanged;
             this.Session.CountAtInterval.CollectionChanged -= CountAtInterval_CollectionChanged;
-            this.Session.StopCapture();
-        }
-
-        /// <summary>
-        /// When the count interval is changed, remove 50% of all the
-        /// CaptureSubject count intervals
-        /// </summary>
-        private void Settings_CountIntervalChanged(object sender, EventArgs e)
-        {
-            this.DeltaCount.RemoveOneInTwoListItems();
         }
     }
 }

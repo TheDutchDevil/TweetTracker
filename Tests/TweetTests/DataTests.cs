@@ -27,7 +27,7 @@ namespace TweetTests
 
             var model = new StaticSessionViewModel();
 
-            model.StartCapture(session);
+            model.StartListening(session);
 
             settings.MaxDataPointsPassed += (sender, args) => Assert.AreEqual(5, model.DeltaCount.Count);
 

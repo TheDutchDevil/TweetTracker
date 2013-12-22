@@ -86,12 +86,17 @@
     <Compile Include="RelayCommand.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
+    <Compile Include="ViewModels\CaptureSessionBase.cs" />
     <Compile Include="ViewModels\CaptureSettingsViewModel.cs" />
     <Compile Include="ViewModels\Converters\VisibilityConverter.cs" />
     <Compile Include="ViewModels\DataModel\CaptureSubjectMapper.cs" />
     <Compile Include="ViewModels\EditableSettingsRowViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="ViewModels\SessionViewModel.cs" />
     <Compile Include="ViewModels\StaticSessionViewModel.cs" />
+    <Compile Include="Views\SessionView.xaml.cs">
+      <DependentUpon>SessionView.xaml</DependentUpon>
+    </Compile>
     <Page Include="CaptureSessionView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -112,6 +117,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\SessionView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">

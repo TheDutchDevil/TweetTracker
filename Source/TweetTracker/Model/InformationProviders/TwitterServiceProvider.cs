@@ -36,8 +36,8 @@ namespace TweetTracker.Model.InformationProviders
                 {
                     ConsumerKey = Resources.ConsumerKey,
                     ConsumerSecret = Resources.ConsumerSecret,
-                    OAuthToken = Resources.OAuthToken,
-                    AccessToken = Resources.OAuthAccessToken
+                    OAuthToken = Resources.OAuthAccessToken,
+                    AccessToken = Resources.OAuthAccessTokenSecret
 
                 }
             };
