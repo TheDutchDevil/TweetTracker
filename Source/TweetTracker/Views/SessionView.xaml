@@ -22,7 +22,7 @@
         </Grid.RowDefinitions>
         
         <TabControl
-            Grid.Row="1"
+            Grid.Row="2"
             ItemsSource="{Binding Pages}"/>
     </Grid>
 </UserControl>
