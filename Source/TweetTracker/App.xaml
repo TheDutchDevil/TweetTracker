@@ -10,7 +10,11 @@
         <DataTemplate x:Key="SettingsDT" DataType="viewModels:CaptureSettingsViewModel">
             <view:CaptureSettingsView/>
         </DataTemplate>
-        
+
+        <DataTemplate DataType="{x:Type viewModels:StaticSessionViewModel}">
+            <view:CaptureSessionView/>
+        </DataTemplate>
+
         <converters:VisibilityConverter x:Key="BoolToVisConverter"/>
     </Application.Resources>
 </Application>

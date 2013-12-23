@@ -7,12 +7,6 @@
              xmlns:views="clr-namespace:TweetTracker"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <UserControl.Resources>
-        <DataTemplate DataType="viewModels:StaticSessionViewModel">
-            <views:CaptureSessionView/>
-        </DataTemplate>
-    </UserControl.Resources>
-    
     
     <Grid>
         <Grid.RowDefinitions>
@@ -20,9 +14,25 @@
             <RowDefinition Height="10"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        
+
         <TabControl
             Grid.Row="2"
-            ItemsSource="{Binding Pages}"/>
+            ItemsSource="{Binding Pages}">
+            <TabControl.ItemTemplate>
+                <DataTemplate>
+                    <Label Content="{Binding DisplayName}"/>
+                </DataTemplate>
+            </TabControl.ItemTemplate>
+            
+            <TabControl.ContentTemplate>
+                <DataTemplate>
+                    <Grid>                    
+                        <ContentControl
+                        Content="{Binding}"/>
+                    </Grid>
+                </DataTemplate>
+            </TabControl.ContentTemplate>
+        
+        </TabControl>
     </Grid>
 </UserControl>

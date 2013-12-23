@@ -56,7 +56,7 @@ namespace TweetTracker.Model.InformationProviders
             {
                 this.StopListening();
 
-                Thread.Sleep(100);
+                Thread.Sleep(200);
 
                 this.StartRunning();
             }

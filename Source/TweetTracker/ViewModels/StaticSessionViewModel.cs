@@ -69,27 +69,28 @@ namespace TweetTracker.ViewModels
             {
                 foreach (var newItem in e.NewItems)
                 {
-                    int indexOf = this.Session.CountAtInterval.IndexOf((KeyValuePair<int, int>)newItem);
+                    var countItem = (KeyValuePair<int, int>)newItem;
+
+                    int indexOf = this.Session.CountAtInterval.IndexOf(countItem);
 
                     if (indexOf == 0)
                     {
                         continue;
                     }
 
-                    int oldCount = this.Session.CountAtInterval[indexOf - 1].Value;
-
-                    var deltaCount = ((KeyValuePair<int, int>)newItem).Value - oldCount;
-
                     this._dataUpdatesDiscarded++;
                     if (this._dataUpdatesDiscarded % this.Session.Settings.Settings.IgnoreDataUpdateThreshold == 0)
                     {
+                        int oldCount = this.DeltaCount.Sum(kvp => kvp.Value);
+
+                        var deltaCount = countItem.Value - oldCount;
                         Application.Current.Dispatcher.BeginInvoke(new Action(() => this.DeltaCount.Add(new KeyValuePair<DateTime, int>(DateTime.Now, deltaCount))));
                         this._dataUpdatesDiscarded = 0;
                     }
                 }
             }
 
-            }
+        }
 
         public ObservableCollection<CaptureSubjectMapper> Subjects
         {
@@ -116,6 +117,7 @@ namespace TweetTracker.ViewModels
 
             this._dataUpdatesDiscarded = 0;
 
+            this.DeltaCount.Add(new KeyValuePair<DateTime, int>(DateTime.Now, 0));
             this.Session.CountAtInterval.CollectionChanged += CountAtInterval_CollectionChanged;
             this.Session.Settings.Settings.MaxDataPointsPassed += (sender, e) => this.DeltaCount.RemoveOneInTwoListItems();
             MakeSubjects();

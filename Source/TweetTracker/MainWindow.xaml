@@ -48,15 +48,9 @@
 
         </Expander>
 
-        <ScrollViewer
-              
-            VerticalScrollBarVisibility="Auto"
-            Grid.Row="5" Grid.Column="0"
-            Grid.ColumnSpan="7">
-        
-            <views:SessionView
+        <views:SessionView
+            Grid.Row="5"
+            Grid.Column="0" Grid.ColumnSpan="7"
                 DataContext="{Binding Session}"/>
-
-        </ScrollViewer>
     </Grid>
 </Window>

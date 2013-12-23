@@ -17,79 +17,84 @@
 
         <converters:RandomColorProvider x:Key="ColorProvider"/>
 
-        <Style x:Key="DataPointStyle" TargetType="{x:Type vis:LineDataPoint}">
+        <!--Style x:Key="DataPointStyle" TargetType="{x:Type vis:LineDataPoint}">
             <Setter Property="Width" Value="0" />
             <Setter Property="Background" Value="{Binding Converter={StaticResource ColorProvider}}"/>
-        </Style>
+        </>-->
       
 
     </UserControl.Resources>
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="10"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="20"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="10"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-        
-        <TextBlock 
+
+
+    <ScrollViewer
+              
+            VerticalScrollBarVisibility="Auto">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="10"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="20"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="10"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock 
             Grid.Row="1" Grid.Column="1"
             Style="{StaticResource HeaderStyle}">
-            <TextBlock.Text>
-                <MultiBinding StringFormat="{}Total Tweets tracked: {0}">
-                    <Binding Path="Session.AllTweetsCount" />
-                </MultiBinding>
-            </TextBlock.Text>
-        </TextBlock>
+                <TextBlock.Text>
+                    <MultiBinding StringFormat="{}Total Tweets tracked: {0}">
+                        <Binding Path="Session.AllTweetsCount" />
+                    </MultiBinding>
+                </TextBlock.Text>
+            </TextBlock>
 
 
-        <WrapPanel 
+            <WrapPanel 
             Grid.Row="3" Grid.Column="1">
-            
-            <vis:Chart
+
+                <vis:Chart
             Width="700" Height="{Binding ModelsHeight}">
-                <vis:Chart.Series>
-                    <vis:BarSeries Title="Tweets per category"
+                    <vis:Chart.Series>
+                        <vis:BarSeries Title="Tweets per category"
                                ItemsSource="{Binding Path=Session.Subjects}"
                             IndependentValueBinding="{Binding Path=Key}"
                             DependentValueBinding="{Binding Path=AllStatusCount}">
-                    </vis:BarSeries>
-                </vis:Chart.Series>
-            </vis:Chart>
+                        </vis:BarSeries>
+                    </vis:Chart.Series>
+                </vis:Chart>
 
-            <local:MultipleChart 
+                <local:MultipleChart 
                  SeriesSource="{Binding Path=Subjects, Mode=TwoWay}" 
             Width="700" Height="400">
-                <local:MultipleChart.SeriesTemplate >
-                    <DataTemplate >
-                        <vis:LineSeries
-                            DataPointStyle="{StaticResource DataPointStyle}"
+                    <local:MultipleChart.SeriesTemplate >
+                        <DataTemplate >
+                            <vis:LineSeries
                             Title="{Binding Key}"
                             ItemsSource="{Binding DataPoints}"
                             IndependentValueBinding="{Binding Key}"
                             DependentValueBinding="{Binding Value}" />
-                    </DataTemplate>
-                </local:MultipleChart.SeriesTemplate>
-            </local:MultipleChart>
+                        </DataTemplate>
+                    </local:MultipleChart.SeriesTemplate>
+                </local:MultipleChart>
 
 
-            <vis:Chart
+                <vis:Chart
                 Width="700" Height="400">
-                <vis:Chart.Series>
-                    <vis:LineSeries
+                    <vis:Chart.Series>
+                        <vis:LineSeries
                         Title="Delta tweet per interval"
                         ItemsSource="{Binding DeltaCount}"
                         IndependentValueBinding="{Binding Path=Key}"
                         DependentValueBinding="{Binding Path=Value}">
-                        
-                    </vis:LineSeries>
-                </vis:Chart.Series>
-            </vis:Chart>
 
-        </WrapPanel>
-    </Grid>
+                        </vis:LineSeries>
+                    </vis:Chart.Series>
+                </vis:Chart>
+
+            </WrapPanel>
+        </Grid>
+    </ScrollViewer>
 </UserControl>
