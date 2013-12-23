@@ -77,7 +77,7 @@ namespace TweetTracker
             {
                 this._dataPoints++;
                 this._timerTicksIgnored = 0;
-                }
+            }
 
             if (this._dataPoints == this._maxDataPoints)
             {
@@ -86,9 +86,15 @@ namespace TweetTracker
 
                 if (MaxDataPointsPassed != null)
                 {
-                    MaxDataPointsPassed(this, new EventArgs());
+                    try
+                    {
+                        MaxDataPointsPassed(this, new EventArgs());
+                    }
+                    catch(Exception ex)
+                    {
+                        Debug.WriteLine(ex.Message);
+                    }
                 }
-
             }
         }
     }

@@ -15,7 +15,7 @@ namespace TweetTracker.Model
         {
             this.HashTag = string.Empty;
             this.CompareKeys = new Dictionary<string, List<string>>();
-            this._settings = new Settings(50, 2500);
+            this._settings = new Settings(70, 1000);
         }
 
         public CaptureSettings(CaptureSettingsViewModel model) : this()

@@ -19,12 +19,14 @@ namespace TweetTracker.ViewModels
     class StaticSessionViewModel : CaptureSessionBase
     {
         private CaptureSession _session;
-        
+
         private ObservableCollection<KeyValuePair<DateTime, int>> _deltaCount;
 
         private ObservableCollection<CaptureSubjectMapper> _subjects;
 
         private int _dataUpdatesDiscarded;
+
+        private readonly object _deltaCountLock = new object();
 
         public StaticSessionViewModel()
         {
@@ -46,6 +48,12 @@ namespace TweetTracker.ViewModels
             get
             {
                 return this._deltaCount;
+            }
+
+            set
+            {
+                this._deltaCount = value;
+                this.OnPropertyChanged("DeltaCount");
             }
         }
 
@@ -69,23 +77,26 @@ namespace TweetTracker.ViewModels
             {
                 foreach (var newItem in e.NewItems)
                 {
-                    var countItem = (KeyValuePair<int, int>)newItem;
-
-                    int indexOf = this.Session.CountAtInterval.IndexOf(countItem);
-
-                    if (indexOf == 0)
+                    lock (this._deltaCountLock)
                     {
-                        continue;
-                    }
+                        var countItem = (KeyValuePair<int, int>)newItem;
 
-                    this._dataUpdatesDiscarded++;
-                    if (this._dataUpdatesDiscarded % this.Session.Settings.Settings.IgnoreDataUpdateThreshold == 0)
-                    {
-                        int oldCount = this.DeltaCount.Sum(kvp => kvp.Value);
+                        int indexOf = this.Session.CountAtInterval.IndexOf(countItem);
 
-                        var deltaCount = countItem.Value - oldCount;
-                        Application.Current.Dispatcher.BeginInvoke(new Action(() => this.DeltaCount.Add(new KeyValuePair<DateTime, int>(DateTime.Now, deltaCount))));
-                        this._dataUpdatesDiscarded = 0;
+                        if (indexOf == 0)
+                        {
+                            continue;
+                        }
+
+                        this._dataUpdatesDiscarded++;
+                        if (this._dataUpdatesDiscarded % this.Session.Settings.Settings.IgnoreDataUpdateThreshold == 0)
+                        {
+                            int oldCount = this.DeltaCount.Sum(kvp => kvp.Value);
+
+                            var deltaCount = countItem.Value - oldCount;
+                            Application.Current.Dispatcher.BeginInvoke(new Action(() => this.DeltaCount.Add(new KeyValuePair<DateTime, int>(DateTime.Now, deltaCount))));
+                            this._dataUpdatesDiscarded = 0;
+                        }
                     }
                 }
             }
@@ -105,7 +116,7 @@ namespace TweetTracker.ViewModels
                 this.OnPropertyChanged("Subjects");
             }
         }
-        
+
         public override void StartListening(CaptureSession session)
         {
             if (session == null)
@@ -119,11 +130,11 @@ namespace TweetTracker.ViewModels
 
             this.DeltaCount.Add(new KeyValuePair<DateTime, int>(DateTime.Now, 0));
             this.Session.CountAtInterval.CollectionChanged += CountAtInterval_CollectionChanged;
-            this.Session.Settings.Settings.MaxDataPointsPassed += (sender, e) => this.DeltaCount.RemoveOneInTwoListItems();
+            this.Session.Settings.Settings.MaxDataPointsPassed += (sender, e) => Application.Current.Dispatcher.Invoke(() => this.RemakeDeltaCountList());
             MakeSubjects();
 
             this.Session.Subjects.CollectionChanged += Subjects_CollectionChanged;
-            
+
             this.OnPropertyChanged("Session");
             this.OnPropertyChanged("Subjects");
             this.OnPropertyChanged("ModelsHeight");
@@ -160,6 +171,34 @@ namespace TweetTracker.ViewModels
         {
             this.Session.Subjects.CollectionChanged -= this.Subjects_CollectionChanged;
             this.Session.CountAtInterval.CollectionChanged -= CountAtInterval_CollectionChanged;
+        }
+
+        private void RemakeDeltaCountList()
+        {
+            lock (this._deltaCountLock)
+            {
+                var oldList = new ObservableCollection<KeyValuePair<DateTime, int>>(this.DeltaCount);
+
+                var newList = new ObservableCollection<KeyValuePair<DateTime, int>>();
+
+                newList.Add(oldList[0]);
+
+                for (var i = 2; i < oldList.Count; i += 2)
+                {
+                    var newValue = oldList[i - 1].Value + oldList[i].Value;
+
+                    var time = oldList[i].Key;
+
+                    newList.Add(new KeyValuePair<DateTime, int>(time, newValue));
+
+                    if (i == oldList.Count - 2)
+                    {
+                        throw new Exception("Lost some data");
+                    }
+                }
+
+                this.DeltaCount = newList;
+            }
         }
     }
 }

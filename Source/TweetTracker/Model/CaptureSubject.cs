@@ -81,7 +81,7 @@ namespace TweetTracker.Model
                 {
                     if (status.Text.ToUpperInvariant().Contains(keyword.ToUpperInvariant()))
                     {
-                        Console.WriteLine(string.Format(CultureInfo.InvariantCulture, "Added to {0}: '{1}'", this.Key, status.Text));
+                        //Console.WriteLine(string.Format(CultureInfo.InvariantCulture, "Added to {0}: '{1}'", this.Key, status.Text));
                         this.AllStatusCount = this._allStatusCount + 1;
                         break;
                     }
