@@ -26,6 +26,8 @@ namespace TweetTracker.ViewModels
 
         private int _dataUpdatesDiscarded;
 
+        private int _deltaCountBuffer = 0;
+
         private readonly object _deltaCountLock = new object();
 
         public StaticSessionViewModel()
@@ -93,9 +95,10 @@ namespace TweetTracker.ViewModels
                         {
                             int oldCount = this.DeltaCount.Sum(kvp => kvp.Value);
 
-                            var deltaCount = countItem.Value - oldCount;
+                            var deltaCount = countItem.Value - oldCount + this._deltaCountBuffer;
                             Application.Current.Dispatcher.BeginInvoke(new Action(() => this.DeltaCount.Add(new KeyValuePair<DateTime, int>(DateTime.Now, deltaCount))));
                             this._dataUpdatesDiscarded = 0;
+                            this._deltaCountBuffer = 0;
                         }
                     }
                 }
@@ -193,7 +196,7 @@ namespace TweetTracker.ViewModels
 
                     if (i == oldList.Count - 2)
                     {
-                        throw new Exception("Lost some data");
+                        this._deltaCountBuffer += oldList[i + 1].Value;
                     }
                 }
 
