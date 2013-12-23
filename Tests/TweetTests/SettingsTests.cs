@@ -44,7 +44,7 @@ namespace TweetTests
 
             settings.MaxDataPointsPassed += (sender, e) => secondIntervalElapsed = true;
 
-            System.Threading.Thread.Sleep(1190);
+            System.Threading.Thread.Sleep(1250);
 
             Assert.AreEqual(true, secondIntervalElapsed);
         }
