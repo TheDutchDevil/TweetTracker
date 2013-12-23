@@ -123,7 +123,7 @@
   <data name="ConsumerSecret" xml:space="preserve">
     <value>Redacted</value>
   </data>
-  <data name="OAuthAccessToken" xml:space="preserve">
+  <data name="OAuthAccessTokenSecret" xml:space="preserve">
     <value>Redacted</value>
   </data>
   <data name="OAuthToken" xml:space="preserve">
