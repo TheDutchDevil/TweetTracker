@@ -14,6 +14,32 @@
             <RowDefinition Height="10"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
+        
+        <StackPanel 
+            Orientation="Horizontal"
+            Grid.Row="0">
+
+            <TextBlock 
+            Style="{StaticResource HeaderStyle}">
+                <TextBlock.Text>
+                    <MultiBinding StringFormat="{}Total Tweets tracked: {0}">
+                        <Binding Path="Session.AllTweetsCount" />
+                    </MultiBinding>
+                </TextBlock.Text>
+            </TextBlock>
+            
+            <TextBlock
+                Margin="10,0,0,0"
+                Style="{StaticResource HeaderStyle}">
+                <TextBlock.Text>
+                    <MultiBinding StringFormat="{}Updating every {0} {1}">
+                        <Binding Path="UpdateInterval"/>
+                        <Binding Path="UpdateName"/>
+                    </MultiBinding>
+                </TextBlock.Text>
+            </TextBlock>
+                
+        </StackPanel>
 
         <TabControl
             Grid.Row="2"

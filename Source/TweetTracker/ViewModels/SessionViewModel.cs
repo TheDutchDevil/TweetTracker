@@ -19,6 +19,22 @@ namespace TweetTracker.ViewModels
             this._tabpages = new ObservableCollection<CaptureSessionBase>();
         }
 
+        public int UpdateInterval
+        {
+            get
+            {
+                return this.Session.Settings.Settings.CountInterval / 1000 * this.Session.Settings.Settings.IgnoreDataUpdateThreshold;
+            }
+        }
+
+        public string UpdateName
+        {
+            get
+            {
+                return "Seconds";
+            }
+        }
+
         public CaptureSession Session
         {
             get
@@ -58,17 +74,27 @@ namespace TweetTracker.ViewModels
             this.Pages.Clear();
 
             this.Session = session;
+            this.Session.Settings.Settings.MaxDataPointsPassed += Settings_MaxDataPointsPassed;
             this.Session.StartCaptureNonBlocking();
 
             var staticVm = new StaticSessionViewModel();
             staticVm.StartListening(session);
 
             this.Pages.Add(staticVm);
+
+            this.OnPropertyChanged("updateInterval");
+        }
+
+        private void Settings_MaxDataPointsPassed(object sender, EventArgs e)
+        {
+            this.OnPropertyChanged("UpdateInterval");
         }
 
         public void StopSession()
         {
             this.Session.StopCapture();
+
+            this.Session.Settings.Settings.MaxDataPointsPassed -= this.Settings_MaxDataPointsPassed;
 
             foreach (var model in this.Pages)
             {

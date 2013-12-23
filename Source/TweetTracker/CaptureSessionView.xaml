@@ -11,9 +11,6 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Resources>
-        <Style x:Key="HeaderStyle" TargetType="TextBlock">
-            <Setter Property="FontSize" Value="20"/>
-        </Style>
 
         <converters:RandomColorProvider x:Key="ColorProvider"/>
 
@@ -41,15 +38,6 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <TextBlock 
-            Grid.Row="1" Grid.Column="1"
-            Style="{StaticResource HeaderStyle}">
-                <TextBlock.Text>
-                    <MultiBinding StringFormat="{}Total Tweets tracked: {0}">
-                        <Binding Path="Session.AllTweetsCount" />
-                    </MultiBinding>
-                </TextBlock.Text>
-            </TextBlock>
 
 
             <WrapPanel 

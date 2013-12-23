@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,8 +26,6 @@ namespace TweetTracker.ViewModels
         private ObservableCollection<CaptureSubjectMapper> _subjects;
 
         private int _dataUpdatesDiscarded;
-
-        private int _deltaCountBuffer = 0;
 
         private readonly object _deltaCountLock = new object();
 
@@ -95,10 +94,11 @@ namespace TweetTracker.ViewModels
                         {
                             int oldCount = this.DeltaCount.Sum(kvp => kvp.Value);
 
-                            var deltaCount = countItem.Value - oldCount + this._deltaCountBuffer;
-                            Application.Current.Dispatcher.BeginInvoke(new Action(() => this.DeltaCount.Add(new KeyValuePair<DateTime, int>(DateTime.Now, deltaCount))));
+                            var deltaCount = countItem.Value - oldCount;
+                            var timestamp = DateTime.Now;
+
+                            Application.Current.Dispatcher.BeginInvoke(new Action(() => this.DeltaCount.Add(new KeyValuePair<DateTime, int>(timestamp, deltaCount))));
                             this._dataUpdatesDiscarded = 0;
-                            this._deltaCountBuffer = 0;
                         }
                     }
                 }
@@ -193,11 +193,6 @@ namespace TweetTracker.ViewModels
                     var time = oldList[i].Key;
 
                     newList.Add(new KeyValuePair<DateTime, int>(time, newValue));
-
-                    if (i == oldList.Count - 2)
-                    {
-                        this._deltaCountBuffer += oldList[i + 1].Value;
-                    }
                 }
 
                 this.DeltaCount = newList;
