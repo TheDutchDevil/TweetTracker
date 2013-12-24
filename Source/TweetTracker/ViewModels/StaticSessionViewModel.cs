@@ -34,6 +34,7 @@ namespace TweetTracker.ViewModels
             this._deltaCount = new ObservableCollection<KeyValuePair<DateTime, int>>();
             this.Subjects = new ObservableCollection<CaptureSubjectMapper>();
             this.Session = null;
+            this.DisplayName = "Long term";
         }
 
         public int ModelsHeight

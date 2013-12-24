@@ -17,11 +17,9 @@ namespace TweetTracker.Util.StyleProviders
         private static readonly Style BaseStyle;
 
         private static readonly Brush[] AvailableBrushes = new Brush[] {
-                                                    Brushes.Beige,
                                                     Brushes.Black,
                                                     Brushes.Blue,
                                                     Brushes.Cyan,
-                                                    Brushes.DarkGoldenrod,
                                                     Brushes.DarkGray,
                                                     Brushes.DarkGreen,
                                                     Brushes.DeepPink,

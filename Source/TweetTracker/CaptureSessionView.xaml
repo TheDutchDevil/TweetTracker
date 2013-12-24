@@ -6,7 +6,6 @@
              xmlns:sparrow="http://sparrowtoolkit.codeplex.com/wpf"
              xmlns:vms="clr-namespace:TweetTracker.ViewModels"
              xmlns:local="clr-namespace:TweetTracker.Controls"
-             xmlns:converters="clr-namespace:TweetTracker.Converters"
              xmlns:vis="clr-namespace:System.Windows.Controls.DataVisualization.Charting;assembly=System.Windows.Controls.DataVisualization.Toolkit"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
