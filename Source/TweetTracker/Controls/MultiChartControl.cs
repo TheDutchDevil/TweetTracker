@@ -10,6 +10,8 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using System.Collections;
 using System.Windows.Controls.DataVisualization.Charting;
+using TweetTracker.Util.StyleProviders;
+using TweetTracker.ViewModels.DataModel;
 
 namespace TweetTracker.Controls
 {
@@ -53,8 +55,21 @@ namespace TweetTracker.Controls
                         dataTemplate = this.SeriesTemplate;
                     }
 
-                    // load data template content
-                    if (dataTemplate != null)
+                    if(dataTemplate == null)
+                    {
+                        throw new InvalidOperationException("Invalid data lead to an invalid state for this multi chart control");
+                    }
+
+                    if (dataTemplate.LoadContent() is LineSeries)
+                    {
+                        var lineSeries = dataTemplate.LoadContent() as LineSeries;
+
+                        lineSeries.DataContext = item;
+                        lineSeries.DataPointStyle = DataPointStyleProvider.StyleForSubjectMapper(item as CaptureSubjectMapper);
+
+                        this.Series.Add(lineSeries);
+                    }
+                    else
                     {
                         Series series = dataTemplate.LoadContent() as Series;
 

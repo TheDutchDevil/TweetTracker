@@ -72,7 +72,7 @@
       <DependentUpon>CaptureSettingsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\MultiChartControl.cs" />
-    <Compile Include="Converters\RandomColorProvider.cs" />
+    <Compile Include="Util\Converters\RandomColorProvider.cs" />
     <Compile Include="DependencyInjection\ServiceProvider.cs" />
     <Compile Include="ExtensionUtil.cs" />
     <Compile Include="Model\CaptureSession.cs" />
@@ -82,10 +82,11 @@
     <Compile Include="Model\InformationProviders\TwitterServiceProvider.cs" />
     <Compile Include="RelayCommand.cs" />
     <Compile Include="Settings.cs" />
+    <Compile Include="Util\StyleProviders\DataPointStyleProvider.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\CaptureSessionBase.cs" />
     <Compile Include="ViewModels\CaptureSettingsViewModel.cs" />
-    <Compile Include="ViewModels\Converters\VisibilityConverter.cs" />
+    <Compile Include="Util\Converters\VisibilityConverter.cs" />
     <Compile Include="ViewModels\DataModel\CaptureSubjectMapper.cs" />
     <Compile Include="ViewModels\EditableSettingsRowViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
@@ -118,6 +119,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\StyleDictionary\DataPointStyles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -137,6 +142,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="App.config" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -145,7 +151,7 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="Views\App.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
