@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Source", "Source", "{20B48F09-E78E-4A54-944D-475A46424E3C}"
+	ProjectSection(SolutionItems) = preProject
+		Source\TweetTracker\Views\App.config = Source\TweetTracker\Views\App.config
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TweetTracker", "Source\TweetTracker\TweetTracker.csproj", "{E798B131-1390-4226-8495-CE49C50952A6}"
 EndProject
@@ -38,8 +41,5 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{E798B131-1390-4226-8495-CE49C50952A6} = {20B48F09-E78E-4A54-944D-475A46424E3C}
 		{E8CAA5D6-261E-43B8-874B-19FC20D4ABE3} = {41FD3346-E967-46B7-B896-4ACDA127F955}
-	EndGlobalSection
-	GlobalSection(Performance) = preSolution
-		HasPerformanceSessions = true
 	EndGlobalSection
 EndGlobal
