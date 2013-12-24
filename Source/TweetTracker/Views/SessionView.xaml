@@ -29,7 +29,7 @@
             </TextBlock>
             
             <TextBlock
-                Margin="10,0,0,0"
+                Margin="20,0,0,0"
                 Style="{StaticResource HeaderStyle}">
                 <TextBlock.Text>
                     <MultiBinding StringFormat="{}Updating every {0} {1}">
