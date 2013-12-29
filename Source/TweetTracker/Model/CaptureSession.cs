@@ -17,6 +17,9 @@ using TweetTracker.ViewModels;
 
 namespace TweetTracker.Model
 {
+    
+        public delegate void StatusProcessed(Status status, string action);
+
     sealed class CaptureSession : BaseViewModel
     {
         private IProvide _provider;
@@ -34,6 +37,8 @@ namespace TweetTracker.Model
         private ObservableCollection<KeyValuePair<int, int>> _countAtInterval;
 
         private System.Timers.Timer _timer;
+        
+        public event StatusProcessed StatusProcessedEvent;
 
         public CaptureSession(CaptureSettings settings)
         {
@@ -238,6 +243,11 @@ namespace TweetTracker.Model
             }
 
             this.AllTweetsCount++;
+
+            if(this.StatusProcessedEvent != null)
+            {
+                this.StatusProcessedEvent(status, "Unimplemented");
+            }
         }
     }
 }

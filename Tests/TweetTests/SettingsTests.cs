@@ -1,19 +1,23 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Timers;
-using TweetTracker;
-using TweetTracker.DependencyInjection;
-using TweetTracker.Model;
-
-namespace TweetTests
+﻿namespace TweetTests
 {
+    using System.Collections.Generic;
+    using System.Timers;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using TweetTracker;
+    using TweetTracker.DependencyInjection;
+    using TweetTracker.Model;
+
+    /// <summary>
+    /// Class that contains unit tests which can be used to
+    /// test the Settings class
+    /// </summary>
     [TestClass]
     public class SettingsTests
     {
+        /// <summary>
+        /// Method that verifies that the Settings.DataLimitPassed event is
+        /// correctly fired
+        /// </summary>
         [TestMethod]
         public void AssertDataLimitPassedIsFired()
         {
@@ -34,10 +38,11 @@ namespace TweetTests
             session.StartCapture();
             timer.Start();
 
-            while(!firstIntervalElapsed)
+            while (!firstIntervalElapsed)
             {
                 System.Threading.Thread.Sleep(5);
             }
+
             Assert.AreEqual(2, settings.IgnoreDataUpdateThreshold);
 
             bool secondIntervalElapsed = false;
@@ -48,9 +53,11 @@ namespace TweetTests
 
             Assert.AreEqual(true, secondIntervalElapsed);
         }
-
-
-
+        
+        /// <summary>
+        /// Tests whether the settings object returns the correct status
+        /// for several status transitions
+        /// </summary>
         [TestMethod]
         public void AssertSettingsAreCorrectlyStarted()
         {
