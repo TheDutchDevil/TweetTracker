@@ -1,0 +1,68 @@
+﻿<UserControl x:Class="TweetTracker.Views.DebugView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <ScrollViewer
+        VerticalScrollBarVisibility="Auto"
+        HorizontalScrollBarVisibility="Hidden">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="10"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="10"/>
+            </Grid.RowDefinitions>
+            
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="10"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="10"/>
+            </Grid.ColumnDefinitions>
+            
+            <ListView
+                ItemsSource="{Binding Statuses}"
+                Grid.Row="1"
+                Grid.Column="1">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+
+                        <Border 
+                            Margin="7">
+                            <Border.Background>
+                                <SolidColorBrush Color="LightBlue"/>
+                            </Border.Background>
+                            <Border.Effect>
+                                <DropShadowEffect 
+                                    BlurRadius="5" 
+                                    Color="Blue" 
+                                    Direction="235" 
+                                    Opacity=".3"
+                                    RenderingBias="Quality" 
+                                    ShadowDepth="10" />
+                            </Border.Effect>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="2"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="2"/>
+                                </Grid.RowDefinitions>
+
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="2"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="2"/>
+                                </Grid.ColumnDefinitions>
+                                <Label 
+                                    Content="{Binding Text}"
+                                    Grid.Row="1" Grid.Column="1"/>
+
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
+    </ScrollViewer>
+</UserControl>
