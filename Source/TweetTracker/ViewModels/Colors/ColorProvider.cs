@@ -12,7 +12,7 @@ namespace TweetTracker.ViewModels.Colors
 
         private static List<Brush> providedColors = new List<Brush>();
 
-        public static Brush getNextColor()
+        public static Brush GetNextColor()
         {
             Brush graphColor;
             switch (providedColors.Count)
@@ -44,7 +44,7 @@ namespace TweetTracker.ViewModels.Colors
             return graphColor;
         }
 
-        public static void reset()
+        public static void Reset()
         {
             providedColors.Clear();
         }

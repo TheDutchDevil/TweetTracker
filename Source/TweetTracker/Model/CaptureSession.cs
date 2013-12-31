@@ -53,7 +53,7 @@ namespace TweetTracker.Model
             foreach(var subjectKey in this._settings.CompareKeys.Keys)
             {
 
-                this._captureSubjects.Add(new CaptureSubject(subjectKey, this._settings.CompareKeys[subjectKey], this.Settings.Settings, ColorProvider.getNextColor())); 
+                this._captureSubjects.Add(new CaptureSubject(subjectKey, this._settings.CompareKeys[subjectKey], this.Settings.Settings, ColorProvider.GetNextColor())); 
             }
         }
 
@@ -150,7 +150,7 @@ namespace TweetTracker.Model
                 }
                 else
                 {
-                    this._captureSubjects.Add(new CaptureSubject(settingsRow.Key, settingsRow.Value, this._settings.Settings, ColorProvider.getNextColor()));
+                    this._captureSubjects.Add(new CaptureSubject(settingsRow.Key, settingsRow.Value, this._settings.Settings, ColorProvider.GetNextColor()));
                 }
             }
 
