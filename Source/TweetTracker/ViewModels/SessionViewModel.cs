@@ -73,7 +73,6 @@ namespace TweetTracker.ViewModels
             }
 
             this.Pages.Clear();
-            ColorProvider.reset();
 
             this.Session = session;
             this.Session.Settings.Settings.MaxDataPointsPassed += Settings_MaxDataPointsPassed;
@@ -109,6 +108,7 @@ namespace TweetTracker.ViewModels
                 model.StopListening();
             }
 
+            ColorProvider.reset();
         }
 
         public void UpdateCaptureSettings(CaptureSettingsViewModel settingsModel)
