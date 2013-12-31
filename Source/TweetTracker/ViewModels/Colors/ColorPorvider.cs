@@ -6,7 +6,12 @@ using System.Threading.Tasks;
 
 namespace TweetTracker.ViewModels.Colors
 {
-    class Class1
+    class ColorPorvider
     {
+        public static List<System.Windows.Media.Brush> getGraphColors(int amount)
+        {
+
+            return null;
+        }
     }
 }
