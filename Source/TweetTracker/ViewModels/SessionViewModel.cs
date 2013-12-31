@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TweetTracker.Model;
+using TweetTracker.ViewModels.Colors;
 
 namespace TweetTracker.ViewModels
 {
@@ -65,13 +66,14 @@ namespace TweetTracker.ViewModels
 
 
         public void StartSession(CaptureSession session)
-        {
+        {    
             if (session == null)
             {
                 throw new ArgumentNullException("session");
             }
 
             this.Pages.Clear();
+            ColorProvider.reset();
 
             this.Session = session;
             this.Session.Settings.Settings.MaxDataPointsPassed += Settings_MaxDataPointsPassed;
