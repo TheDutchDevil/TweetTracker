@@ -73,10 +73,6 @@ namespace TweetTracker.ViewModels
             }
 
             this.Pages.Clear();
-<<<<<<< HEAD
-            ColorProvider.Reset();
-=======
->>>>>>> e9ce3f6c7585d1a012e1a7dfa3404732535204bf
 
             this.Session = session;
             this.Session.Settings.Settings.MaxDataPointsPassed += Settings_MaxDataPointsPassed;
