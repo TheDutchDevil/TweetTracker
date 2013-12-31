@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
 using System.Windows;
+using System.Windows.Media;
 using TweetTracker.ViewModels;
 
 namespace TweetTracker.Model
@@ -26,8 +27,11 @@ namespace TweetTracker.Model
 
         private Settings _settings;
 
-        public CaptureSubject(string key, List<string> keywords, Settings settings)
+        private readonly Brush _brush;
+
+        public CaptureSubject(string key, List<string> keywords, Settings settings, Brush brush)
         {
+            this._brush = brush;
             this._settings = settings;
             this._keywords = keywords;
             this._key = key;
@@ -46,6 +50,14 @@ namespace TweetTracker.Model
             get
             {
                 return this._key;
+            }
+        }
+
+        public Brush Brush
+        {
+            get
+            {
+                return this._brush;
             }
         }
 

@@ -53,7 +53,7 @@ namespace TweetTracker.Util.StyleProviders
             }
 
             var style = new Style(typeof(LineDataPoint), BaseStyle);
-            style.Setters.Add(new Setter(LineDataPoint.BackgroundProperty, AvailableBrushes[RandomBrushPicker.Next(AvailableBrushes.Length)]));
+            style.Setters.Add(new Setter(LineDataPoint.BackgroundProperty, mapper.Subject.Brush));
             AssociatedStyles.Add(mapper, style);
 
             return style;
