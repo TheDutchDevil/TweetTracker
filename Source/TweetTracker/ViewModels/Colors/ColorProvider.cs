@@ -9,14 +9,21 @@ namespace TweetTracker.ViewModels.Colors
 {
     class ColorProvider
     {
-        public static List<Brush> getGraphColors(int amount)
+
+        private static List<Brush> providedColors = new List<Brush>();
+
+        public static Brush getNextColor()
         {
-            List<Brush> graphColors = new List<Brush>();
-            for (int i = 0; i < amount; i++)
-            {             
-                graphColors.Add(Brushes.Blue);
-            }
-            return graphColors;
+            Brush graphColor;
+            
+            graphColor = Brushes.Blue;
+            providedColors.Add(graphColor);
+            return graphColor;
+        }
+
+        public static void reset()
+        {
+            providedColors.Clear();
         }
     }
 }
