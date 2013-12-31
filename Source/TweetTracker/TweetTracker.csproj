@@ -87,7 +87,7 @@
     <Compile Include="ViewModels\CaptureSessionBase.cs" />
     <Compile Include="ViewModels\CaptureSettingsViewModel.cs" />
     <Compile Include="Util\Converters\VisibilityConverter.cs" />
-    <Compile Include="ViewModels\Colors\ColorPorvider.cs" />
+    <Compile Include="ViewModels\Colors\ColorProvider.cs" />
     <Compile Include="ViewModels\DataModel\CaptureSubjectMapper.cs" />
     <Compile Include="ViewModels\DebugTweetViewModel.cs" />
     <Compile Include="ViewModels\EditableSettingsRowViewModel.cs" />
