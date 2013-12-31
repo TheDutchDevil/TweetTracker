@@ -77,10 +77,16 @@ namespace TweetTracker.ViewModels
             this.Session.Settings.Settings.MaxDataPointsPassed += Settings_MaxDataPointsPassed;
             this.Session.StartCaptureNonBlocking();
 
-            var staticVm = new StaticSessionViewModel();
-            staticVm.StartListening(session);
+            this.Pages.Add(new StaticSessionViewModel());
+#if DEBUG 
+            this.Pages.Add(new DebugTweetViewModel());
+#endif 
 
-            this.Pages.Add(staticVm);
+            foreach(var model in this.Pages)
+            {
+                model.StartListening(session);
+            }
+
 
             this.OnPropertyChanged("updateInterval");
         }

@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-<Import Project="$(SolutionDir)\External Files\Stylecop\StyleCop.Targets" /> 
+  <Import Project="$(SolutionDir)\External Files\Stylecop\StyleCop.Targets" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -82,16 +82,21 @@
     <Compile Include="Model\InformationProviders\TwitterServiceProvider.cs" />
     <Compile Include="RelayCommand.cs" />
     <Compile Include="Settings.cs" />
+    <Compile Include="Util\ObservableQueue.cs" />
     <Compile Include="Util\StyleProviders\DataPointStyleProvider.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\CaptureSessionBase.cs" />
     <Compile Include="ViewModels\CaptureSettingsViewModel.cs" />
     <Compile Include="Util\Converters\VisibilityConverter.cs" />
     <Compile Include="ViewModels\DataModel\CaptureSubjectMapper.cs" />
+    <Compile Include="ViewModels\DebugTweetViewModel.cs" />
     <Compile Include="ViewModels\EditableSettingsRowViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\SessionViewModel.cs" />
     <Compile Include="ViewModels\StaticSessionViewModel.cs" />
+    <Compile Include="Views\DebugView.xaml.cs">
+      <DependentUpon>DebugView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\SessionView.xaml.cs">
       <DependentUpon>SessionView.xaml</DependentUpon>
     </Compile>
@@ -115,6 +120,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\DebugView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\SessionView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
