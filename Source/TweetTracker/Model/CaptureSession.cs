@@ -165,6 +165,7 @@ namespace TweetTracker.Model
 
             var searchString = this.MakeSearchString();
             this._provider.SetSearchString(searchString);
+            this._provider.SetCultureString(settings.Culture);
         }
 
         private void AppendToAllTweets()
@@ -176,6 +177,7 @@ namespace TweetTracker.Model
             this._countAtInterval.Clear();
 
             this._provider.SetSearchString(searchString);
+            this._provider.SetCultureString(this._settings.Culture);
             this._provider.StartListening(this.HandleTweet);
             this._settings.Settings.StartCounting();
 

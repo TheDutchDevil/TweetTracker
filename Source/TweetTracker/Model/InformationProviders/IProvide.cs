@@ -22,6 +22,8 @@ namespace TweetTracker.Model.InformationProviders
         /// <param name="searchString"></param>
         void SetSearchString(string searchString);
 
+        void SetCultureString(string cultureString);
+
         void StartListening(AcceptStatusUpdate listener);
 
         void StopListening();

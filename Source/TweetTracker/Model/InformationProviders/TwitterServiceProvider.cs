@@ -15,6 +15,8 @@ namespace TweetTracker.Model.InformationProviders
     {
         private string _currentSearchString;
 
+        private string _currentCultureString;
+
         private bool _isRunning;
 
         private TwitterContext _context;
@@ -45,14 +47,28 @@ namespace TweetTracker.Model.InformationProviders
             auth.Authorize();
 
             this._context = new TwitterContext(auth);
+            this._currentCultureString = string.Empty;
             this._isRunning = false;
         }
 
         public void SetSearchString(string searchString)
         {
+            if(searchString == null)
+            {
+                throw new ArgumentNullException("searchString");
+            }
+
             this._currentSearchString = searchString;
 
-            if(this._isRunning)
+            Restart();
+        }
+
+        /// <summary>
+        /// Will restart the service provider if it is running
+        /// </summary>
+        private void Restart()
+        {
+            if (this._isRunning)
             {
                 this.StopListening();
 
@@ -97,16 +113,40 @@ namespace TweetTracker.Model.InformationProviders
         {
             try
             {
-                this._stream = (from stream in this._context.Streaming
-                                where stream.Type == StreamingType.Filter &&
-                                stream.Track == this._currentSearchString.ToString()
-                                select stream).StreamingCallback((con) => this._listener(con)).SingleOrDefault();
+                if (this._currentCultureString == string.Empty)
+                {
+                    this._stream = (from stream in this._context.Streaming
+                                    where stream.Type == StreamingType.Filter &&
+                                    stream.Track == this._currentSearchString.ToString()
+                                    select stream).StreamingCallback((con) => this._listener(con)).SingleOrDefault();
+                }
+                else
+                {
+                    this._stream = (from stream in this._context.Streaming
+                                    where stream.Type == StreamingType.Filter &&
+                                    stream.Language == this._currentCultureString &&
+                                    stream.Track == this._currentSearchString.ToString()
+                                    select stream).StreamingCallback((con) => this._listener(con)).SingleOrDefault();
+                }
             }
             catch(WebException ex)
             {
                 Debug.WriteLine("Could not connect to the twitter API: '{0}'\n{1}", ex.Message, ex.StackTrace);
                 throw;
             }
+        }
+
+
+        public void SetCultureString(string cultureString)
+        {
+            if(cultureString == null)
+            {
+                throw new ArgumentNullException("cultureString");
+            }
+
+            this._currentCultureString = cultureString;
+
+            this.Restart();
         }
     }
 }

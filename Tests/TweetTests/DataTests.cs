@@ -48,6 +48,12 @@ namespace TweetTests
             public void StopListening()
             {
             }
+
+
+            public void SetCultureString(string cultureString)
+            {
+                throw new NotImplementedException();
+            }
         }
     }
 }
