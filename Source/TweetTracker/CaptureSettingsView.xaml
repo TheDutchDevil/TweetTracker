@@ -13,6 +13,8 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="10"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         
         <Grid.ColumnDefinitions>
@@ -26,23 +28,40 @@
             <ColumnDefinition MinWidth="100" Width="150"/>
         </Grid.ColumnDefinitions>
         
-        <TextBox Grid.Row="1" Height="20" Grid.Column="3" Text="{Binding HashTag, UpdateSourceTrigger=PropertyChanged}"/>
-        <Label Content="Hashtag: " Grid.Row="1" Grid.Column="1"/>
+        <StackPanel 
+            Orientation="Horizontal"
+            Grid.Row="1" Grid.Column="1"
+            Grid.ColumnSpan="5">
+            
+            <Button
+                Command="{Binding SaveCommand}"
+                Margin="4"
+                Content="Save"/>
+            
+            <Button
+                Command="{Binding LoadCommand}"
+                Margin="4"
+                Content="Load"/>
+            
+        </StackPanel>
+        
+        <TextBox Grid.Row="3" Height="20" Grid.Column="3" Text="{Binding HashTag, UpdateSourceTrigger=PropertyChanged}"/>
+        <Label Content="Hashtag: " Grid.Row="3" Grid.Column="1"/>
 
-        <Label Content="Culture: " Grid.Row="1" Grid.Column="5"/>
-        <TextBox Grid.Row="1" Height="20" Grid.Column="7" Text="{Binding Culture, UpdateSourceTrigger=PropertyChanged}"/>
+        <Label Content="Culture: " Grid.Row="3" Grid.Column="5"/>
+        <TextBox Grid.Row="3" Height="20" Grid.Column="7" Text="{Binding Culture, UpdateSourceTrigger=PropertyChanged}"/>
 
         <Button 
                 Content="Add" Command="{Binding AddCommand}"
-                Grid.Row="3" Grid.Column="1" Height="26" />
+                Grid.Row="5" Grid.Column="1" Height="26" />
         
         <TextBlock 
-            Grid.Row="3" Grid.Column="3"
+            Grid.Row="5" Grid.Column="3"
             Text="Add a unique identifier for contestants in the left column. Place their keywords, seperated by semi colons, in the right column" TextWrapping="WrapWithOverflow"/>
 
         <ListView 
             ItemsSource="{Binding SettingsRow}" 
-            Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="7">
+            Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="7">
                    
                 <ListView.ItemTemplate>
                     <DataTemplate>
