@@ -27,9 +27,9 @@ namespace TweetTracker.Model
 
         private Settings _settings;
 
-        private readonly Brush _brush;
+        private readonly SolidColorBrush _brush;
 
-        public CaptureSubject(string key, List<string> keywords, Settings settings, Brush brush)
+        public CaptureSubject(string key, List<string> keywords, Settings settings, SolidColorBrush brush)
         {
             this._brush = brush;
             this._settings = settings;
@@ -53,7 +53,7 @@ namespace TweetTracker.Model
             }
         }
 
-        public Brush Brush
+        public SolidColorBrush Brush
         {
             get
             {
@@ -85,7 +85,7 @@ namespace TweetTracker.Model
             this._keywords = keywords;
         }
 
-        public void AddStatus(Status status)
+        public bool AddStatus(Status status)
         {
             if (this._timer.Enabled)
             {
@@ -95,10 +95,12 @@ namespace TweetTracker.Model
                     {
                         //Console.WriteLine(string.Format(CultureInfo.InvariantCulture, "Added to {0}: '{1}'", this.Key, status.Text));
                         this.AllStatusCount = this._allStatusCount + 1;
-                        break;
+                        return true;
                     }
                 }
             }
+
+            return false;
         }
 
         public void StopAccepting()

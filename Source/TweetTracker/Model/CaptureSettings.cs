@@ -16,6 +16,7 @@ namespace TweetTracker.Model
             this.HashTag = string.Empty;
             this.CompareKeys = new Dictionary<string, List<string>>();
             this._settings = new Settings(70, 1000);
+            this.Culture = string.Empty;
         }
 
         public CaptureSettings(CaptureSettingsViewModel model) : this()
@@ -26,6 +27,7 @@ namespace TweetTracker.Model
             }
 
             this.HashTag = model.HashTag;
+            this.Culture = model.Culture;
 
             foreach(var row in model.SettingsRow)
             {
@@ -73,6 +75,12 @@ namespace TweetTracker.Model
         {
             get;
             private set;
+        }
+
+        public string Culture
+        {
+            get;
+            set;
         }
 
         public string HashTag

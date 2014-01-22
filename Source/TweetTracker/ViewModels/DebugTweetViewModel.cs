@@ -3,9 +3,11 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Media;
 using TweetTracker.Model;
 using TweetTracker.Util;
 
@@ -17,7 +19,7 @@ namespace TweetTracker.ViewModels
 
         private const int StatusListSize = 20;
 
-        private ObservableCollection<Status> _statuses;
+        private ObservableCollection<TweetTrackerAction> _actions;
 
         private DateTime _lastAddTime;
 
@@ -26,21 +28,21 @@ namespace TweetTracker.ViewModels
         public DebugTweetViewModel()
         {
             this.DisplayName = "Debug";
-            this._statuses = new ObservableCollection<Status>();
+            this._actions = new ObservableCollection<TweetTrackerAction>();
         }
 
-        public ObservableCollection<Status> Statuses
+        public ObservableCollection<TweetTrackerAction> Actions
         {
             get
             {
-                return this._statuses;
+                return this._actions;
             }
         }
 
         public override void StartListening(Model.CaptureSession session)
         {
             this._session = session;
-            this._statuses.Clear();
+            this._actions.Clear();
             session.StatusProcessedEvent += session_StatusProcessedEvent;
             this._lastAddTime = new DateTime();
         }
@@ -50,24 +52,24 @@ namespace TweetTracker.ViewModels
             this._session.StatusProcessedEvent -= this.session_StatusProcessedEvent;
         }
 
-        private void session_StatusProcessedEvent(LinqToTwitter.Status status, string action)
+        private void session_StatusProcessedEvent(TweetTrackerAction action)
         {
             var timeSpanSinceLastAddition = DateTime.Now - this._lastAddTime;
 
             if (timeSpanSinceLastAddition.TotalMilliseconds > AddThreshold)
             {
-                Application.Current.Dispatcher.Invoke(() => this.AddStatus(status));
+                Application.Current.Dispatcher.Invoke(() => this.AddStatus(action));
             }
         }
 
-        private void AddStatus(Status status)
+        private void AddStatus(TweetTrackerAction action)
         {
-            if (this._statuses.Count > StatusListSize)
+            if (this._actions.Count > StatusListSize)
             {
-                this._statuses.RemoveAt(this._statuses.Count - 1);
+                this._actions.RemoveAt(this._actions.Count - 1);
             }
 
-            this._statuses.Insert(0, status);
+            this._actions.Insert(0, action);
             this._lastAddTime = DateTime.Now;
         }
     }

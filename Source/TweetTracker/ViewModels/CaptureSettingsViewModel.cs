@@ -11,13 +11,32 @@ namespace TweetTracker.ViewModels
     {
         private string _captureHashTag;
 
+        private string _culture;
+
         private ObservableCollection<EditableSettingsRowViewModel> _settingRows;
 
         public CaptureSettingsViewModel()
         {
             this._settingRows = new ObservableCollection<EditableSettingsRowViewModel>();
 
+            this._culture = string.Empty;
+
             this.AddCommand = new RelayCommand(() => this.SettingsRow.Add(new EditableSettingsRowViewModel(this.SettingsRow)));
+        }
+
+        public string Culture
+        {
+            get
+            {
+                return this._culture;
+            }
+
+            set
+            {
+                this._culture = value;
+                this.OnPropertyChanged("Culture");
+
+            }
         }
 
 
