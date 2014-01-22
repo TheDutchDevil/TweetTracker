@@ -221,23 +221,8 @@ namespace TweetTracker.Model
             _timer.Start();
         }
 
-        private void HandleTweet(StreamContent stream)
+        private void HandleTweet(Status status)
         {
-            if(stream.Status != TwitterErrorStatus.Success)
-            {
-                Debug.WriteLine(stream.Error.ToString());
-                return;
-            }
-
-            JsonData statusJson = JsonMapper.ToObject(stream.Content);
-            var status = new Status(statusJson);
-
-            if(status.Text == null)
-            {
-                Debug.WriteLine("status text is null for status with content: " + stream.Content);
-                return;
-            }
-
             var addedTo = new List<CaptureSubject>();
 
             if (status.Text.Contains(this._settings.HashTag.Replace("#", string.Empty)))

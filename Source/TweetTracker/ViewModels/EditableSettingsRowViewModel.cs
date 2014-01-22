@@ -20,5 +20,11 @@ namespace TweetTracker.ViewModels
         public string Values { get; set; }
 
         public ICommand DeleteCommand { get; private set; }
+
+        public void RepairCommand(ObservableCollection<EditableSettingsRowViewModel> editRowList)
+        {
+            this.DeleteCommand = new RelayCommand(() => editRowList.Remove(this));
+            this.OnPropertyChanged("DeleteCommand");
+        }
     }
 }

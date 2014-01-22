@@ -1,4 +1,5 @@
 ﻿using LinqToTwitter;
+using LitJson;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -16,6 +17,8 @@ namespace TweetTracker.Model.InformationProviders
         private string _currentSearchString;
 
         private string _currentCultureString;
+
+        private IEnumerable<string> _cultures;
 
         private bool _isRunning;
 
@@ -58,9 +61,11 @@ namespace TweetTracker.Model.InformationProviders
                 throw new ArgumentNullException("searchString");
             }
 
-            this._currentSearchString = searchString;
-
-            Restart();
+            if (!searchString.Equals(this._currentSearchString))
+            {
+                this._currentSearchString = searchString;
+                Restart();
+            }
         }
 
         /// <summary>
@@ -113,21 +118,10 @@ namespace TweetTracker.Model.InformationProviders
         {
             try
             {
-                if (this._currentCultureString == string.Empty)
-                {
                     this._stream = (from stream in this._context.Streaming
                                     where stream.Type == StreamingType.Filter &&
                                     stream.Track == this._currentSearchString.ToString()
-                                    select stream).StreamingCallback((con) => this._listener(con)).SingleOrDefault();
-                }
-                else
-                {
-                    this._stream = (from stream in this._context.Streaming
-                                    where stream.Type == StreamingType.Filter &&
-                                    stream.Language == this._currentCultureString &&
-                                    stream.Track == this._currentSearchString.ToString()
-                                    select stream).StreamingCallback((con) => this._listener(con)).SingleOrDefault();
-                }
+                                    select stream).StreamingCallback(this.HandleTweet).Single();
             }
             catch(WebException ex)
             {
@@ -144,9 +138,53 @@ namespace TweetTracker.Model.InformationProviders
                 throw new ArgumentNullException("cultureString");
             }
 
-            this._currentCultureString = cultureString;
+            if (this._currentCultureString != cultureString.Replace(" ", string.Empty))
+            {
+                this._currentCultureString = cultureString.Replace(" ", string.Empty);
+                if (this._currentCultureString == string.Empty)
+                {
+                    this._cultures = null;
+                }
+                else
+                {
+                    this._cultures = this._currentCultureString.Split(',');
+                }
 
-            this.Restart();
+                this.Restart();
+            }
+        }
+
+        private void HandleTweet(StreamContent content)
+        {
+            if (content.Status != TwitterErrorStatus.Success)
+            {
+                Debug.WriteLine(content.Error.ToString());
+                return;
+            }
+
+            JsonData statusJson = JsonMapper.ToObject(content.Content);
+            var status = new Status(statusJson);
+
+            if(status.Text == null)
+            {
+                return;
+            }
+
+            if (this._cultures != null)
+            {
+                foreach (var culture in this._cultures)
+                {
+                    if(status.Lang.Equals(culture))
+                    {
+                        this._listener(status);
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                this._listener(status);
+            }
         }
     }
 }

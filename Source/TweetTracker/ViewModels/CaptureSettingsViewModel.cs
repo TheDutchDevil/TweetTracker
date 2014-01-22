@@ -140,6 +140,11 @@ namespace TweetTracker.ViewModels
                 this.HashTag = model.HashTag;
                 this.Culture = model.Culture;
                 this.SettingsRow = model.SettingsRow;
+
+                foreach(var row in this.SettingsRow)
+                {
+                    row.RepairCommand(this.SettingsRow);
+                }
             }
         }
 

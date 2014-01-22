@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace TweetTracker.Model.InformationProviders
 {
-    public delegate void AcceptStatusUpdate(StreamContent status);
+    public delegate void AcceptStatusUpdate(Status status);
 
     interface IProvide
     {
