@@ -19,7 +19,7 @@ using TweetTracker.ViewModels.Colors;
 namespace TweetTracker.Model
 {
     
-        public delegate void StatusProcessed(Status status, string action);
+    internal delegate void StatusProcessed(TweetTrackerAction action);
 
     sealed class CaptureSession : BaseViewModel
     {
@@ -238,11 +238,16 @@ namespace TweetTracker.Model
                 return;
             }
 
+            var addedTo = new List<CaptureSubject>();
+
             if (status.Text.Contains(this._settings.HashTag.Replace("#", string.Empty)))
             {
                 foreach (var subject in this._captureSubjects)
                 {
-                    subject.AddStatus(status);
+                    if(subject.AddStatus(status))
+                    {
+                        addedTo.Add(subject);
+                    }
                 }
             }
 
@@ -250,7 +255,7 @@ namespace TweetTracker.Model
 
             if(this.StatusProcessedEvent != null)
             {
-                this.StatusProcessedEvent(status, "Unimplemented");
+                this.StatusProcessedEvent(new TweetTrackerAction(status, addedTo));
             }
         }
     }

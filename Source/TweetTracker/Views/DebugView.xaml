@@ -22,21 +22,19 @@
             </Grid.ColumnDefinitions>
             
             <ListView
-                ItemsSource="{Binding Statuses}"
+                ItemsSource="{Binding Actions}"
                 Grid.Row="1"
                 Grid.Column="1">
                 <ListView.ItemTemplate>
                     <DataTemplate>
 
                         <Border 
-                            Margin="7">
-                            <Border.Background>
-                                <SolidColorBrush Color="LightBlue"/>
-                            </Border.Background>
+                            Margin="7"
+                            Background="DarkGray">
                             <Border.Effect>
                                 <DropShadowEffect 
                                     BlurRadius="5" 
-                                    Color="Blue" 
+                                    Color="Black" 
                                     Direction="235" 
                                     Opacity=".3"
                                     RenderingBias="Quality" 
@@ -45,6 +43,7 @@
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="2"/>
+                                    <RowDefinition Height="8"/>
                                     <RowDefinition Height="*"/>
                                     <RowDefinition Height="2"/>
                                 </Grid.RowDefinitions>
@@ -54,9 +53,16 @@
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="2"/>
                                 </Grid.ColumnDefinitions>
+
+                                <Rectangle Grid.Row="1" Grid.Column="1">
+                                    <Rectangle.Fill>
+                                        <LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5" GradientStops="{Binding Colors}"/>
+                                    </Rectangle.Fill>
+                                </Rectangle>
+
                                 <Label 
-                                    Content="{Binding Text}"
-                                    Grid.Row="1" Grid.Column="1"/>
+                                    Content="{Binding Path=Status.Text}"
+                                    Grid.Row="2" Grid.Column="1"/>
 
                             </Grid>
                         </Border>

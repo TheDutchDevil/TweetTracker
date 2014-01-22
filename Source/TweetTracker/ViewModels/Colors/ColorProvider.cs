@@ -10,11 +10,11 @@ namespace TweetTracker.ViewModels.Colors
     class ColorProvider
     {
 
-        private static List<Brush> providedColors = new List<Brush>();
+        private static List<SolidColorBrush> providedColors = new List<SolidColorBrush>();
 
-        public static Brush GetNextColor()
+        public static SolidColorBrush GetNextColor()
         {
-            Brush graphColor;
+            SolidColorBrush graphColor;
             switch (providedColors.Count)
             {
                 case 0:

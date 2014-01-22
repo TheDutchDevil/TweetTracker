@@ -108,7 +108,7 @@ namespace TweetTracker.ViewModels
                 model.StopListening();
             }
 
-            ColorProvider.reset();
+            ColorProvider.Reset();
         }
 
         public void UpdateCaptureSettings(CaptureSettingsViewModel settingsModel)
