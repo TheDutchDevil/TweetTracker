@@ -182,7 +182,6 @@ namespace TweetTracker.ViewModels
 
                 var newList = new ObservableCollection<KeyValuePair<DateTime, int>>();
 
-
                 for (var i = 2; i < oldList.Count; i += 2)
                 {
                     var newValue = oldList[i - 1].Value + oldList[i].Value;

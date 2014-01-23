@@ -42,9 +42,15 @@
             Grid.Row="1" Grid.Column="5" 
             IsEnabled="{Binding SessionStarted}"/>
         
-        <Expander Header="Capture settings" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="7">
+        <Expander 
+            Header="Capture settings" 
+            Grid.Row="3" Grid.Column="0" 
+            Grid.ColumnSpan="7">
             
-            <ContentPresenter Content="{Binding Settings}" ContentTemplate="{StaticResource SettingsDT}"/>
+            <ContentPresenter 
+                Content="{Binding Settings}" 
+                ContentTemplate="{StaticResource SettingsDT}"
+                HorizontalAlignment="Left"/>
 
         </Expander>
 
