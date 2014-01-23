@@ -183,10 +183,23 @@ namespace TweetTracker.Model
 
             this._startedAt = DateTime.Now;
             this._timer = new System.Timers.Timer(this._settings.Settings.CountInterval);
-            this._timer.Elapsed += (sender, e) => this._countAtInterval.Add(
-                new KeyValuePair<int, int>(this._countAtInterval.Max(kvp => kvp.Key) + this._settings.Settings.CountInterval / 1000, this.AllTweetsCount));
-            this._countAtInterval.Add(
-                new KeyValuePair<int, int>(this._countAtInterval.Count * this._settings.Settings.CountInterval, 0));
+            this._timer.Elapsed += (sender, e) =>
+                {
+                    if (this._countAtInterval.Count == 0)
+                    {
+                        this._countAtInterval.Add(
+                            new KeyValuePair<int, int>(
+                                this._settings.Settings.CountInterval / 1000,
+                                this.AllTweetsCount));
+                    }
+                    else
+                    {
+                        this._countAtInterval.Add(
+                            new KeyValuePair<int, int>(
+                                this._countAtInterval.Max(kvp => kvp.Key) + this._settings.Settings.CountInterval / 1000,
+                                this.AllTweetsCount));
+                    }
+                };
             this._timer.Start();
         }
 

@@ -83,9 +83,7 @@ namespace TweetTracker.ViewModels
                     {
                         var countItem = (KeyValuePair<int, int>)newItem;
 
-                        int indexOf = this.Session.CountAtInterval.IndexOf(countItem);
-
-                        if (indexOf == 0)
+                        if (this.Session.CountAtInterval.IndexOf(countItem) == 0)
                         {
                             continue;
                         }
@@ -132,7 +130,6 @@ namespace TweetTracker.ViewModels
 
             this._dataUpdatesDiscarded = 0;
 
-            this.DeltaCount.Add(new KeyValuePair<DateTime, int>(DateTime.Now, 0));
             this.Session.CountAtInterval.CollectionChanged += CountAtInterval_CollectionChanged;
             this.Session.Settings.Settings.MaxDataPointsPassed += (sender, e) => Application.Current.Dispatcher.Invoke(() => this.RemakeDeltaCountList());
             MakeSubjects();
@@ -185,7 +182,6 @@ namespace TweetTracker.ViewModels
 
                 var newList = new ObservableCollection<KeyValuePair<DateTime, int>>();
 
-                newList.Add(oldList[0]);
 
                 for (var i = 2; i < oldList.Count; i += 2)
                 {
