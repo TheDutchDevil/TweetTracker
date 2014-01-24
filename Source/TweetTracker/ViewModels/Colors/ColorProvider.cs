@@ -35,6 +35,36 @@ namespace TweetTracker.ViewModels.Colors
                 case 5:
                     graphColor = Brushes.Black;
                     break;
+                case 6:
+                    graphColor = Brushes.AliceBlue;
+                    break;
+                case 7:
+                    graphColor = Brushes.CadetBlue;
+                    break;
+                case 8:
+                    graphColor = Brushes.Crimson;
+                    break;
+                case 9:
+                    graphColor = Brushes.DarkRed;
+                    break;
+                case 10:
+                    graphColor = Brushes.Gold;
+                    break;
+                case 11:
+                    graphColor = Brushes.Lavender;
+                    break;
+                case 12:
+                    graphColor = Brushes.LightSkyBlue;
+                    break;
+                case 13:
+                    graphColor = Brushes.Lime;
+                    break;
+                case 14:
+                    graphColor = Brushes.MediumAquamarine;
+                    break;
+                case 15:
+                    graphColor = Brushes.OrangeRed;
+                    break;
                 default:
                     graphColor = Brushes.BurlyWood;
                     break;
