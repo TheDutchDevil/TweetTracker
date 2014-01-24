@@ -46,11 +46,19 @@
             Header="Capture settings" 
             Grid.Row="3" Grid.Column="0" 
             Grid.ColumnSpan="7">
-            
-            <ContentPresenter 
+
+
+            <ScrollViewer
+            HorizontalScrollBarVisibility="Hidden"
+            VerticalScrollBarVisibility="Auto"
+            Height="200">
+
+                <ContentPresenter 
                 Content="{Binding Settings}" 
                 ContentTemplate="{StaticResource SettingsDT}"
                 HorizontalAlignment="Left"/>
+
+            </ScrollViewer>
 
         </Expander>
 

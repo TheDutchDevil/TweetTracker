@@ -60,27 +60,25 @@
             Text="Add a unique identifier for contestants in the left column. Place their keywords, seperated by semi colons, in the right column" TextWrapping="WrapWithOverflow"/>
 
         <ListView 
-            ItemsSource="{Binding SettingsRow}" 
+            ItemsSource="{Binding SettingsRow}"             
             Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="7">
-                   
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <Grid Margin="0,2,0,2">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="120"/>
-                                <ColumnDefinition Width="10"/>
-                                <ColumnDefinition Width="120"/>
+
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Grid Margin="0,2,0,2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="120"/>
                             <ColumnDefinition Width="10"/>
-                                <ColumnDefinition Width="60"/>
+                            <ColumnDefinition Width="120"/>
+                            <ColumnDefinition Width="10"/>
+                            <ColumnDefinition Width="60"/>
                         </Grid.ColumnDefinitions>
                         <TextBox Text="{Binding Key, UpdateSourceTrigger=PropertyChanged}" Grid.Column="0"/>
                         <TextBox Text="{Binding Values, UpdateSourceTrigger=PropertyChanged}" Grid.Column="2"/>
                         <Button Content="Remove" Command="{Binding DeleteCommand}" Grid.Column="4"/>
                     </Grid>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-
-
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
     </Grid>
 </UserControl>
