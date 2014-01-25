@@ -15,7 +15,7 @@ namespace TweetTracker.Model
         {
             this.HashTag = string.Empty;
             this.CompareKeys = new Dictionary<string, List<string>>();
-            this._settings = new Settings(70, 1000);
+            this._settings = new Settings(100, 1000);
             this.Culture = string.Empty;
         }
 
