@@ -10,13 +10,8 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Resources>
-      
-
-    </UserControl.Resources>
-
-
-    <ScrollViewer
-              
+          </UserControl.Resources>
+    <ScrollViewer              
             VerticalScrollBarVisibility="Auto">
         <Grid>
             <Grid.RowDefinitions>
@@ -30,16 +25,16 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-
-
-            <WrapPanel 
-            Grid.Row="3" Grid.Column="1">
-
+            <StackPanel
+                Orientation="Vertical"
+                Grid.Row="3" Grid.Column="1">
                 <vis:Chart
-            Width="700" Height="{Binding ModelsHeight}">
+                    Height="{Binding ModelsHeight}"
+                    Title="Tweets per category"                    >
                     <vis:Chart.Series>
-                        <vis:BarSeries Title="Tweets per category"
-                               ItemsSource="{Binding Path=Session.Subjects}"
+                        <vis:BarSeries 
+                            Title="Tweets per category"
+                            ItemsSource="{Binding Path=Session.Subjects}"  
                             IndependentValueBinding="{Binding Path=Key}"
                             DependentValueBinding="{Binding Path=AllStatusCount}">
                         </vis:BarSeries>
@@ -47,8 +42,9 @@
                 </vis:Chart>
 
                 <local:MultipleChart 
-                 SeriesSource="{Binding Path=Subjects, Mode=TwoWay}" 
-            Width="700" Height="400">
+                    SeriesSource="{Binding Path=Subjects, Mode=TwoWay}" 
+                    Height="400" Title="Tweets per category over time">
+                    
                     <local:MultipleChart.SeriesTemplate >
                         <DataTemplate >
                             <vis:LineSeries
@@ -62,7 +58,8 @@
 
 
                 <vis:Chart
-                Width="700" Height="400">
+                    Height="400"
+                    Title="Tracked tweets per interval">
                     <vis:Chart.Series>
                         <vis:LineSeries
                         Title="Delta tweet per interval"
@@ -74,7 +71,7 @@
                     </vis:Chart.Series>
                 </vis:Chart>
 
-            </WrapPanel>
+            </StackPanel>
         </Grid>
     </ScrollViewer>
 </UserControl>
