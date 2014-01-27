@@ -12,6 +12,8 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="10"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="10"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         
@@ -41,8 +43,14 @@
                 
         </StackPanel>
 
-        <TabControl
+        <ProgressBar
             Grid.Row="2"
+            Maximum="{Binding UpdateInterval}"
+            Margin="10" Height="15"
+            Value="{Binding CurrentInterval, Mode=OneWay}"/>
+        
+        <TabControl
+            Grid.Row="4"
             ItemsSource="{Binding Pages}">
             <TabControl.ItemTemplate>
                 <DataTemplate>

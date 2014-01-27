@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Timers;
 using TweetTracker.Model;
 using TweetTracker.ViewModels.Colors;
 
@@ -14,6 +15,10 @@ namespace TweetTracker.ViewModels
         private ObservableCollection<CaptureSessionBase> _tabpages;
 
         private CaptureSession _session;
+
+        private int _currentInterval;
+
+        private Timer _intervalTimer; 
 
         public SessionViewModel()
         {
@@ -64,6 +69,20 @@ namespace TweetTracker.ViewModels
             }
         }
 
+        public int CurrentInterval
+        {
+            get
+            {
+                return this._currentInterval;
+            }
+
+            private set
+            {
+                this._currentInterval = value;
+                this.OnPropertyChanged("CurrentInterval");
+            }
+        }
+
 
         public void StartSession(CaptureSession session)
         {    
@@ -88,8 +107,22 @@ namespace TweetTracker.ViewModels
                 model.StartListening(session);
             }
 
+            this._intervalTimer = new Timer();
+            this._intervalTimer.Interval = this.Session.Settings.Settings.CountInterval;
+            this._intervalTimer.Elapsed += _intervalTimer_Elapsed;
+            this._intervalTimer.Start();
 
             this.OnPropertyChanged("updateInterval");
+        }
+
+        void _intervalTimer_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            this.CurrentInterval++;
+
+            if(this.CurrentInterval == this.UpdateInterval)
+            {
+                this.CurrentInterval = 0;
+            }
         }
 
         private void Settings_MaxDataPointsPassed(object sender, EventArgs e)
@@ -102,6 +135,7 @@ namespace TweetTracker.ViewModels
             this.Session.StopCapture();
 
             this.Session.Settings.Settings.MaxDataPointsPassed -= this.Settings_MaxDataPointsPassed;
+            this._intervalTimer.Stop();
 
             foreach (var model in this.Pages)
             {
