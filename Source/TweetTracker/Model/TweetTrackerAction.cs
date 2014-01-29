@@ -60,7 +60,7 @@ namespace TweetTracker.Model
             }
             else
             {
-                var step = 1 / (double)this._addedTo.Count;
+                var step = 1 / (double)(this._addedTo.Count - 1);
 
                 for(int i = 0; i < this._addedTo.Count; i++)
                 {

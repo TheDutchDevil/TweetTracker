@@ -238,8 +238,6 @@ namespace TweetTracker.Model
         {
             var addedTo = new List<CaptureSubject>();
 
-            if (status.Text.Contains(this._settings.HashTag.Replace("#", string.Empty)))
-            {
                 foreach (var subject in this._captureSubjects)
                 {
                     if(subject.AddStatus(status))
@@ -247,7 +245,6 @@ namespace TweetTracker.Model
                         addedTo.Add(subject);
                     }
                 }
-            }
 
             this.AllTweetsCount++;
 

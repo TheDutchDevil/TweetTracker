@@ -89,6 +89,15 @@ namespace TweetTracker.Model
         {
             if (this._timer.Enabled)
             {
+                var builder = new StringBuilder();
+
+                foreach(var keyword in this._keywords)
+                {
+                    builder.Append(keyword + ";");
+                }
+
+                Console.WriteLine("Comparing {0} to {1}", status.Text, builder.ToString());
+
                 foreach (var keyword in this._keywords)
                 {
                     if (status.Text.ToUpperInvariant().Contains(keyword.ToUpperInvariant()))
