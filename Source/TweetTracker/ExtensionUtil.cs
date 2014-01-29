@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Threading;
 
 namespace TweetTracker
 {
@@ -19,6 +21,11 @@ namespace TweetTracker
                     Application.Current.Dispatcher.Invoke(() => collection.RemoveAt(i));
                 }
             }
+        }
+
+        public static void InvokeIn(this Dispatcher dispatcher, int time, Action action)
+        {
+            var timer = new Timer(e => action(), null, time, Timeout.Infinite);
         }
     }
 }

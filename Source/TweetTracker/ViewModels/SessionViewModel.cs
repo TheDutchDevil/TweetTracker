@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
+using System.Windows;
 using TweetTracker.Model;
 using TweetTracker.ViewModels.Colors;
 
@@ -121,7 +122,7 @@ namespace TweetTracker.ViewModels
 
             if(this.CurrentInterval == this.UpdateInterval)
             {
-                this.CurrentInterval = 0;
+                Task.Delay(200).ContinueWith((b) => Application.Current.Dispatcher.Invoke(() => this.CurrentInterval = 0));
             }
         }
 
