@@ -24,7 +24,7 @@ namespace TweetTracker.Model
 
         private ObservableCollection<CaptureSubject> _captureSubjects;
 
-        private ObservableCollection<KeyValuePair<int, int>> _countAtInterval;
+        private ObservableCollection<KeyValuePair<DateTime, int>> _countAtInterval;
 
         private bool _isRunning = false;
 
@@ -53,7 +53,7 @@ namespace TweetTracker.Model
         {
             this._settings = settings;
             this._provider = ServiceProvider.TwitterProvider;
-            this._countAtInterval = new ObservableCollection<KeyValuePair<int, int>>();
+            this._countAtInterval = new ObservableCollection<KeyValuePair<DateTime, int>>();
 
             this._captureSubjects = new ObservableCollection<CaptureSubject>();
 
@@ -97,7 +97,7 @@ namespace TweetTracker.Model
             }
         }
 
-        public ObservableCollection<KeyValuePair<int, int>> CountAtInterval
+        public ObservableCollection<KeyValuePair<DateTime, int>> CountAtInterval
         {
             get
             {
@@ -257,15 +257,15 @@ namespace TweetTracker.Model
             if (this._countAtInterval.Count == 0)
             {
                 this._countAtInterval.Add(
-                    new KeyValuePair<int, int>(
-                        this._settings.Settings.CountInterval / 1000,
+                    new KeyValuePair<DateTime, int>(
+                        DateTime.Now,
                         this.AllTweetsCount));
             }
             else
             {
                 this._countAtInterval.Add(
-                    new KeyValuePair<int, int>(
-                        this._countAtInterval.Max(kvp => kvp.Key) + this._settings.Settings.CountInterval / 1000,
+                    new KeyValuePair<DateTime, int>(
+                        DateTime.Now,
                         this.AllTweetsCount));
             }
         }

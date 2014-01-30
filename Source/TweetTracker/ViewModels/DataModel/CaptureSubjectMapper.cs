@@ -36,7 +36,7 @@ namespace TweetTracker.ViewModels.DataModel
                     this._updatesDiscared++;
                     if (this._updatesDiscared % this._settings.IgnoreDataUpdateThreshold == 0)
                     {
-                        DataPoints.Add(new KeyValuePair<DateTime, int>(DateTime.Now, ((KeyValuePair<int, int>)newItem).Value));
+                        DataPoints.Add(new KeyValuePair<DateTime, int>(DateTime.Now, ((KeyValuePair<DateTime, int>)newItem).Value));
                         this._updatesDiscared = 0;
                     }
                 }

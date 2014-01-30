@@ -81,7 +81,7 @@ namespace TweetTracker.ViewModels
                 {
                     lock (this._deltaCountLock)
                     {
-                        var countItem = (KeyValuePair<int, int>)newItem;
+                        var countItem = (KeyValuePair<DateTime, int>)newItem;
 
                         if (this.Session.CountAtInterval.IndexOf(countItem) == 0)
                         {

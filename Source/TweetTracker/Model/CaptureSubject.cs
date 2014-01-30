@@ -36,6 +36,12 @@ namespace TweetTracker.Model
         private readonly List<Status> _statuses;
 
         /// <summary>
+        /// A list of the amount of a tracked tweets at a point in time after
+        /// the start of the session
+        /// </summary>
+        private readonly ObservableCollection<KeyValuePair<DateTime, int>> _statusCountAtTime;
+
+        /// <summary>
         /// the amount of tweets counted
         /// </summary>
         private double _allStatusCount;
@@ -45,12 +51,6 @@ namespace TweetTracker.Model
         /// regex matching is used for this
         /// </summary>
         private List<string> _keywords;
-
-        /// <summary>
-        /// A list of the amount of a tracked tweets at a point in time after
-        /// the start of the session
-        /// </summary>
-        private ObservableCollection<KeyValuePair<int, int>> _statusCountAtTime;
 
         /// <summary>
         /// Timer used to maintain the _statusCountAtTime collection
@@ -66,14 +66,14 @@ namespace TweetTracker.Model
             this._keywords = keywords;
             this._key = key;
             this._statuses = new List<Status>();
-            this._statusCountAtTime = new ObservableCollection<KeyValuePair<int, int>>();
+            this._statusCountAtTime = new ObservableCollection<KeyValuePair<DateTime, int>>();
             this._timer = new Timer(settings.CountInterval);
             this._timer.Elapsed += (sender, e) => 
-                Application.Current.Dispatcher.Invoke(new Action(() => this._statusCountAtTime.Add(new KeyValuePair<int,int>(this.StatusCountAtTime.Max(kvp => kvp.Key) + this._settings.CountInterval / 1000, (int) this.AllStatusCount))));
+                Application.Current.Dispatcher.Invoke(new Action(() => this._statusCountAtTime.Add(new KeyValuePair<DateTime,int>(DateTime.Now, (int) this.AllStatusCount))));
             this._timer.Start();
 
 
-            this._statusCountAtTime.Add(new KeyValuePair<int, int>((settings.CountInterval / 1000) * this._statusCountAtTime.Count, (int)this.AllStatusCount));
+            this._statusCountAtTime.Add(new KeyValuePair<DateTime, int>(DateTime.Now, (int)this.AllStatusCount));
         }
 
         public string Key
@@ -96,7 +96,7 @@ namespace TweetTracker.Model
         /// Gets a reference to the collection in which the amount
         /// of tracked statutes per interval is tracked
         /// </summary>
-        public ObservableCollection<KeyValuePair<int, int>> StatusCountAtTime
+        public ObservableCollection<KeyValuePair<DateTime, int>> StatusCountAtTime
         {
             get { return this._statusCountAtTime; }
         }
