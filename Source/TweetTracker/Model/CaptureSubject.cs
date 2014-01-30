@@ -43,7 +43,7 @@ namespace TweetTracker.Model
         private ObservableCollection<KeyValuePair<int, int>> _statusCountAtTime;
 
         /// <summary>
-        /// Timer used to maintain the statuscountattime collection
+        /// Timer used to maintain the _statusCountAtTime collection
         /// </summary>
         private Timer _timer;
 
@@ -151,13 +151,6 @@ namespace TweetTracker.Model
         public void StopAccepting()
         {
             this._timer.Stop();
-        }
-
-        private void Settings_CountIntervalChanged(object sender, EventArgs e)
-        {
-            this._timer.Stop();
-            this._timer.Interval = this._settings.CountInterval;
-            this._timer.Start();
         }
     }
 }
