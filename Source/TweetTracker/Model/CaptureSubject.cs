@@ -43,7 +43,7 @@ namespace TweetTracker.Model
         private ObservableCollection<KeyValuePair<int, int>> _statusCountAtTime;
 
         /// <summary>
-        /// 
+        /// Timer used to maintain the statuscountattime collection
         /// </summary>
         private Timer _timer;
 
@@ -114,7 +114,8 @@ namespace TweetTracker.Model
         /// Updates the keywords that this capture subjects uses to match
         /// tweets
         /// </summary>
-        /// <param name="keywords"></param>
+        /// <param name="keywords">The keywords (can include regex strings)
+        /// which this subject should use to match incoming statuses</param>
         public void UpdateKeywords(List<string> keywords)
         {
             this._keywords = keywords;
