@@ -54,7 +54,7 @@ namespace TweetTracker.ViewModels.Colors
                     graphColor = Brushes.Lavender;
                     break;
                 case 12:
-                    graphColor = Brushes.LightSkyBlue;
+                    graphColor = Brushes.Crimson;
                     break;
                 case 13:
                     graphColor = Brushes.Lime;

@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Timers;
 using System.Windows;
@@ -13,16 +14,37 @@ using TweetTracker.ViewModels;
 
 namespace TweetTracker.Model
 {
+    /// <summary>
+    /// One subject that is being tracked in a session, keeps track of
+    /// all the tweets that match the search term
+    /// </summary>
     class CaptureSubject : BaseViewModel
     {
+        /// <summary>
+        /// the name of the subject being tracked
+        /// </summary>
+        private readonly string _key;
+
+        /// <summary>
+        /// the amount of tweets counted
+        /// </summary>
         private double _allStatusCount;
 
+        /// <summary>
+        /// the list of keywords with which provided tweets are matched,
+        /// regex matching is used for this
+        /// </summary>
         private List<string> _keywords;
 
+        /// <summary>
+        /// A list of the amount of a tracked tweets at a point in time after
+        /// the start of the session
+        /// </summary>
         private ObservableCollection<KeyValuePair<int, int>> _statusCountAtTime;
 
-        private string _key;
-
+        /// <summary>
+        /// 
+        /// </summary>
         private Timer _timer;
 
         private Settings _settings;
@@ -61,11 +83,19 @@ namespace TweetTracker.Model
             }
         }
 
+        /// <summary>
+        /// Gets a reference to the collection in which the amount
+        /// of tracked statutes per interval is tracked
+        /// </summary>
         public ObservableCollection<KeyValuePair<int, int>> StatusCountAtTime
         {
             get { return this._statusCountAtTime; }
         }
 
+        /// <summary>
+        /// Gets or sets the total amount of tweets tracked for
+        /// this subject
+        /// </summary>
         public double AllStatusCount
         {
             get 
@@ -80,29 +110,34 @@ namespace TweetTracker.Model
             }
         }
 
+        /// <summary>
+        /// Updates the keywords that this capture subjects uses to match
+        /// tweets
+        /// </summary>
+        /// <param name="keywords"></param>
         public void UpdateKeywords(List<string> keywords)
         {
             this._keywords = keywords;
         }
 
+        /// <summary>
+        /// Takes the provided status and matches it against the
+        /// key words to determine whether it should be added
+        /// </summary>
+        /// <param name="status">The status whose text is used
+        /// to match it against the keywords</param>
+        /// <returns>True if the status was added to this subject,
+        /// otherwise false</returns>
         public bool AddStatus(Status status)
         {
             if (this._timer.Enabled)
             {
-                var builder = new StringBuilder();
-
-                foreach(var keyword in this._keywords)
-                {
-                    builder.Append(keyword + ";");
-                }
-
-                Console.WriteLine("Comparing {0} to {1}", status.Text, builder.ToString());
-
                 foreach (var keyword in this._keywords)
                 {
-                    if (status.Text.ToUpperInvariant().Contains(keyword.ToUpperInvariant()))
+                    var match = Regex.Match(status.Text, keyword, RegexOptions.IgnoreCase);
+
+                    if (match.Success)
                     {
-                        //Console.WriteLine(string.Format(CultureInfo.InvariantCulture, "Added to {0}: '{1}'", this.Key, status.Text));
                         this.AllStatusCount = this._allStatusCount + 1;
                         return true;
                     }

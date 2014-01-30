@@ -161,8 +161,14 @@ namespace TweetTracker.Model.InformationProviders
                 Debug.WriteLine(content.Error.ToString());
                 return;
             }
+            
+            var statusJson = ContentToJson(content);
 
-            JsonData statusJson = JsonMapper.ToObject(content.Content);
+            if(statusJson == null)
+            {
+                return;
+            }
+
             var status = new Status(statusJson);
 
             if(status.Text == null)
@@ -185,6 +191,22 @@ namespace TweetTracker.Model.InformationProviders
             {
                 this._listener(status);
             }
+        }
+
+        private static JsonData ContentToJson(StreamContent content)
+        {
+
+            JsonData statusJson;
+            try
+            {
+                statusJson = JsonMapper.ToObject(content.Content);
+            }
+            catch (JsonException ex)
+            {
+                Console.WriteLine("Could not convert stream content to json data, content: {0}, message: {1}", content.Content, ex.Message);
+                return null;
+            }
+            return statusJson;
         }
     }
 }

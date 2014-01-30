@@ -150,7 +150,6 @@ namespace TweetTracker.ViewModels
         {
             var settings = new CaptureSettings(settingsModel);
             this.Session.UpdateCaptureSettings(settings);
-        }
-        
+        }        
     }
 }
