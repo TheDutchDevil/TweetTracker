@@ -26,6 +26,16 @@ namespace TweetTracker.Model
         private readonly string _key;
 
         /// <summary>
+        /// The brush used to draw this capture subject
+        /// </summary>
+        private readonly SolidColorBrush _brush;
+
+        /// <summary>
+        /// All the status added to this subject
+        /// </summary>
+        private readonly List<Status> _statuses;
+
+        /// <summary>
         /// the amount of tweets counted
         /// </summary>
         private double _allStatusCount;
@@ -49,14 +59,13 @@ namespace TweetTracker.Model
 
         private Settings _settings;
 
-        private readonly SolidColorBrush _brush;
-
         public CaptureSubject(string key, List<string> keywords, Settings settings, SolidColorBrush brush)
         {
             this._brush = brush;
             this._settings = settings;
             this._keywords = keywords;
             this._key = key;
+            this._statuses = new List<Status>();
             this._statusCountAtTime = new ObservableCollection<KeyValuePair<int, int>>();
             this._timer = new Timer(settings.CountInterval);
             this._timer.Elapsed += (sender, e) => 
@@ -140,6 +149,7 @@ namespace TweetTracker.Model
                     if (match.Success)
                     {
                         this.AllStatusCount = this._allStatusCount + 1;
+                        this._statuses.Add(status);
                         return true;
                     }
                 }

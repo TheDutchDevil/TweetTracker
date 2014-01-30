@@ -29,23 +29,29 @@ namespace TweetTracker.Model
 
         private ObservableCollection<CaptureSubject> _captureSubjects;
 
+        private ObservableCollection<KeyValuePair<int, int>> _countAtInterval;
+
         private bool _isRunning = false;
 
         private int _tweetCount = 0;
 
         private DateTime _startedAt;
 
-        private ObservableCollection<KeyValuePair<int, int>> _countAtInterval;
-
-        private System.Timers.Timer _timer;
+        /// <summary>
+        /// Timer used to update the CountAtInterval collection
+        /// </summary>
+        private System.Timers.Timer _countAtIntervalTimer;
         
+        /// <summary>
+        /// Event fired whenever a status has been processed by the internals
+        /// of this session
+        /// </summary>
         public event StatusProcessed StatusProcessedEvent;
 
         public CaptureSession(CaptureSettings settings)
         {
             this._settings = settings;
             this._provider = ServiceProvider.TwitterProvider;
-            this._timer = new System.Timers.Timer(this._settings.Settings.CountInterval);
             this._countAtInterval = new ObservableCollection<KeyValuePair<int, int>>();
 
             this._captureSubjects = new ObservableCollection<CaptureSubject>();
@@ -53,8 +59,27 @@ namespace TweetTracker.Model
             foreach(var subjectKey in this._settings.CompareKeys.Keys)
             {
 
-                this._captureSubjects.Add(new CaptureSubject(subjectKey, this._settings.CompareKeys[subjectKey], this.Settings.Settings, ColorProvider.GetNextColor())); 
+                this._captureSubjects.Add(new CaptureSubject(subjectKey, this._settings.CompareKeys[subjectKey], this.Settings.Settings, ColorProvider.GetNextColor()));
             }
+
+            this._countAtIntervalTimer = new System.Timers.Timer(this._settings.Settings.CountInterval);
+            this._countAtIntervalTimer.Elapsed += (sender, e) =>
+            {
+                if (this._countAtInterval.Count == 0)
+                {
+                    this._countAtInterval.Add(
+                        new KeyValuePair<int, int>(
+                            this._settings.Settings.CountInterval / 1000,
+                            this.AllTweetsCount));
+                }
+                else
+                {
+                    this._countAtInterval.Add(
+                        new KeyValuePair<int, int>(
+                            this._countAtInterval.Max(kvp => kvp.Key) + this._settings.Settings.CountInterval / 1000,
+                            this.AllTweetsCount));
+                }
+            };
         }
 
         public CaptureSettings Settings
@@ -132,7 +157,7 @@ namespace TweetTracker.Model
                     subject.StopAccepting();
                 }
 
-                this._timer.Stop();
+                this._countAtIntervalTimer.Stop();
                 this._settings.Settings.StopCounting();
             }
         }
@@ -182,25 +207,7 @@ namespace TweetTracker.Model
             this._settings.Settings.StartCounting();
 
             this._startedAt = DateTime.Now;
-            this._timer = new System.Timers.Timer(this._settings.Settings.CountInterval);
-            this._timer.Elapsed += (sender, e) =>
-                {
-                    if (this._countAtInterval.Count == 0)
-                    {
-                        this._countAtInterval.Add(
-                            new KeyValuePair<int, int>(
-                                this._settings.Settings.CountInterval / 1000,
-                                this.AllTweetsCount));
-                    }
-                    else
-                    {
-                        this._countAtInterval.Add(
-                            new KeyValuePair<int, int>(
-                                this._countAtInterval.Max(kvp => kvp.Key) + this._settings.Settings.CountInterval / 1000,
-                                this.AllTweetsCount));
-                    }
-                };
-            this._timer.Start();
+            this._countAtIntervalTimer.Start();
         }
 
         private string MakeSearchString()
@@ -229,9 +236,9 @@ namespace TweetTracker.Model
 
         private void Settings_CountIntervalChanged(object sender, EventArgs e)
         {
-            _timer.Stop();
-            _timer.Interval = this._settings.Settings.CountInterval;
-            _timer.Start();
+            _countAtIntervalTimer.Stop();
+            _countAtIntervalTimer.Interval = this._settings.Settings.CountInterval;
+            _countAtIntervalTimer.Start();
         }
 
         private void HandleTweet(Status status)
