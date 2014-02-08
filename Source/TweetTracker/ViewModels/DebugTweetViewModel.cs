@@ -64,13 +64,16 @@ namespace TweetTracker.ViewModels
 
         private void AddStatus(TweetTrackerAction action)
         {
-            if (this._actions.Count > StatusListSize)
+            if(!this._session.Settings.HashTag.Equals(string.Empty) || action.AddedTo.Count != 0)
             {
-                this._actions.RemoveAt(this._actions.Count - 1);
-            }
+                if (this._actions.Count > StatusListSize)
+                {
+                    this._actions.RemoveAt(this._actions.Count - 1);
+                }
 
-            this._actions.Insert(0, action);
-            this._lastAddTime = DateTime.Now;
+                this._actions.Insert(0, action);
+                this._lastAddTime = DateTime.Now;
+            }
         }
     }
 }

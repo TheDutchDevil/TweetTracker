@@ -26,6 +26,8 @@ namespace TweetTracker.Model
 
         private ObservableCollection<KeyValuePair<DateTime, int>> _countAtInterval;
 
+        private readonly ObservableCollection<Status> _statuses;
+
         private bool _isRunning = false;
 
         /// <summary>
@@ -65,6 +67,8 @@ namespace TweetTracker.Model
 
             this._countAtIntervalTimer = new System.Timers.Timer(this._settings.Settings.CountInterval);
             this._countAtIntervalTimer.Elapsed += _countAtIntervalTimer_Elapsed;
+
+            this._statuses = new ObservableCollection<Status>();
         }
 
         public CaptureSettings Settings
@@ -87,13 +91,7 @@ namespace TweetTracker.Model
         {
             get
             {
-                return this._tweetCount;
-            }
-
-            set
-            {
-                this._tweetCount = value;
-                this.OnPropertyChanged("AllTweetsCount");
+                return this._statuses.Count;
             }
         }
 
@@ -192,6 +190,7 @@ namespace TweetTracker.Model
             this._settings.Settings.StartCounting();
 
             this._startedAt = DateTime.Now;
+            this._statuses.Clear();
             this._countAtIntervalTimer.Start();
         }
 
@@ -230,17 +229,22 @@ namespace TweetTracker.Model
         {
             var addedTo = new List<CaptureSubject>();
 
-                foreach (var subject in this._captureSubjects)
+            foreach (var subject in this._captureSubjects)
+            {
+                if (subject.AddStatus(status))
                 {
-                    if(subject.AddStatus(status))
-                    {
-                        addedTo.Add(subject);
-                    }
+                    addedTo.Add(subject);
                 }
+            }
 
-            this.AllTweetsCount++;
+            if (!(!this.Settings.HashTag.Equals(string.Empty) || addedTo.Count != 0))
+            {
+                return;
+            }
 
-            if(this.StatusProcessedEvent != null)
+            this.AddStatus(status);
+
+            if (this.StatusProcessedEvent != null)
             {
                 this.StatusProcessedEvent(new TweetTrackerAction(status, addedTo));
             }
@@ -268,6 +272,12 @@ namespace TweetTracker.Model
                         DateTime.Now,
                         this.AllTweetsCount));
             }
+        }
+
+        private void AddStatus(Status status)
+        {
+            this._statuses.Add(status);
+            this.OnPropertyChanged("AllTweetsCount");
         }
     }
 }

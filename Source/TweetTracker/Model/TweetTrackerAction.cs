@@ -46,6 +46,14 @@ namespace TweetTracker.Model
             }
         }
 
+        public ObservableCollection<CaptureSubject> AddedTo
+        {
+            get
+            {
+                return this._addedTo;
+            }
+        }
+
         private void MakeGradients()
         {
             if(this._addedTo.Count == 0)
